@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/flownet2-pytorch" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;28dvd28&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/NVIDIA/flownet2-pytorch.git&quot;,
+    &quot;accountId&quot;: &quot;00d16ace-e562-455d-9a43-85f5a1f3527c&quot;
+  }
+}</component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 1
+}</component>
+  <component name="ProjectId" id="2jb97Srw2PaPRerkZ82tB2zR60i" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Python.FlowNet2.executor": "Run",
+    "Python.channelnorm_cuda.executor": "Run",
+    "Python.cholec80_images.executor": "Run",
+    "Python.demo.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.resample2d.executor": "Run",
+    "Python.testcholeco80_images.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "git-widget-placeholder": "master",
+    "ignore.virus.scanning.warn.message": "true",
+    "last_opened_file_path": "C:/Users/cordi/Desktop/Cartella personale/Compiti scolastici/Materiale università/Magistrale/Primo Anno/Machine and deep learning/Progetto/endossl-main/cholec80/cholec80/frames/video01",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\endossl-main\cholec80\cholec80\frames\video01" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\endossl-main\cholec80\cholec80" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\FlowNet2\pretrained" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\FlowNet2\example" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\FlowNet2" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\endossl-main\cholec80\cholec80\frames" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\endossl-main\cholec80\cholec80\video01" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\FlowNet2_src" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\FlowNet2_src\models" />
+    </key>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.18034.82" />
+        <option value="bundled-python-sdk-975db3bf15a3-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.18034.82" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="" />
+      <created>1721644741483</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1721644741483</updated>
+      <workItem from="1721644742509" duration="7441000" />
+      <workItem from="1721685390986" duration="7923000" />
+      <workItem from="1721751990177" duration="13000" />
+      <workItem from="1721766543277" duration="841000" />
+      <workItem from="1721777123885" duration="4294000" />
+      <workItem from="1721782279651" duration="2126000" />
+      <workItem from="1721829364743" duration="19379000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Progetto$main.coverage" NAME="main Coverage Results" MODIFIED="1721692196167" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Progetto$cholec80_images.coverage" NAME="cholec80_images Coverage Results" MODIFIED="1721837272381" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
+    <SUITE FILE_PATH="coverage/Progetto$demo.coverage" NAME="demo Coverage Results" MODIFIED="1721779799181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Progetto$FlowNet2.coverage" NAME="FlowNet2 Coverage Results" MODIFIED="1721689721592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Progetto$resample2d.coverage" NAME="resample2d Coverage Results" MODIFIED="1721779817279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FlowNet2/networks/resample2d_package" />
+    <SUITE FILE_PATH="coverage/Progetto$channelnorm_cuda.coverage" NAME="channelnorm_cuda Coverage Results" MODIFIED="1721779586176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/.conda/envs/dl-rl-env/Lib/site-packages/channelnorm_cuda-0.0.0-py3.9-win-amd64.egg" />
+    <SUITE FILE_PATH="coverage/Progetto$testcholeco80_images.coverage" NAME="testcholeco80_images Coverage Results" MODIFIED="1721836716931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
+  </component>
+</project>

@@ -1,0 +1,9 @@
+File convertiti da tensorflow a pytorch:
+- inference.py
+- cholec80/* -> nothing to do
+- data/cholec80_image <- TO TEST
+- data/config.json -> nothing to do
+- data/prepare.py -> nothing to do
+- downstream/config.py -> nothing to do
+- downstream/experiments.py <- CHECK IMPORT TRAIN, TO TEST
+- downstream/main.py -> nothing to do
