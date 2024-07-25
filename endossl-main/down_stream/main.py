@@ -4,29 +4,28 @@ import argparse
 import config
 import experiment
 
-
 parser = argparse.ArgumentParser()
 
 # Optional flags, to be used for parameters sweep
 parser.add_argument(
-  '--model',
-  type=str,
-  required=False)
+    '--model',
+    type=str,
+    required=False)
 
 parser.add_argument(
-  '--optimizer',
-  type=str,
-  required=False)
+    '--optimizer',
+    type=str,
+    required=False)
 
 parser.add_argument(
-  '--learning_rate',
-  type=float,
-  required=False)
+    '--learning_rate',
+    type=float,
+    required=False)
 
 parser.add_argument(
-  '--weight_decay',
-  type=float,
-  required=False)
+    '--weight_decay',
+    type=float,
+    required=False)
 
 
 def main(args):
@@ -36,6 +35,7 @@ def main(args):
             setattr(conf, k, v)
     _ = experiment.run_experiment(conf)
 
+
 if __name__ == '__main__':
-  args = parser.parse_args()
-  main(args)
+    args = parser.parse_args()
+    main(args)

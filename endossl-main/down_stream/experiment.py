@@ -3,8 +3,6 @@
 import sys
 import os
 
-sys.path.append(os.path.realpath(__file__ + '/../../'))
-
 import torch
 import torch.nn as nn
 from torchvision import models
@@ -13,19 +11,10 @@ from ..data import cholec80_images
 from ..train import eval_lib
 from ..train import train_lib
 
+sys.path.append(os.path.realpath(__file__ + '/../../'))
+
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
-class CustomResNet50(nn.Module):
-    def __init__(self, num_classes):
-        super(CustomResNet50, self).__init__()
-        self.resnet = models.resnet50(pretrained=True)
-        # self.resnet.fc = nn.Identity()
-        # self.GloAvgPool = nn.AdaptiveAvgPool2d((1, 1)) ->  TODO: valutare se aggiungere o meno la global average pooling layer
-        # self.fc = nn.Linear(1000, num_classes)
-        self.resnet.fc = nn.Linear(self.resnet.fc.in_features, num_classes)
-
-    def forward(self, x):
-        return self.resnet(x)
 
 def verbose_print(msg, verbose=True, is_title=False):
     if verbose:
@@ -61,7 +50,10 @@ def run_experiment(config, verbose=True):
             input_dim=config.input_dim, output_dim=config.num_classes
         )
     elif config.model == 'resnet50':
-        model = CustomResNet50(config.num_classes)
+        # TODO (1): controllare se c'è bisogno di cambiare o aggiungere il Global Average Pooling 2D
+        # TODO (2): se il training viene fatto sull'intero modello resnet50 o solo sull'ultimo layer
+        model = models.resnet50(pretrained=True)
+        model.fc = nn.Linear(model.fc.in_features, config.num_classes)
     elif 'vit' in config.model:
         backbone = torch.load(config.saved_model_dir)
         model = train_lib.LinearFineTuneModel(backbone, config.num_classes)
@@ -74,17 +66,16 @@ def run_experiment(config, verbose=True):
         config.learning_rate,
         config.momentum,
         config.weight_decay,
-        )
-    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9) # TODO: controllare meglio il decay del LR
+    )
+    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)  # TODO: controllare meglio il decay del LR
     loss = train_lib.get_loss(config.task_type)
     saved_model_metrics = train_lib.get_metrics(config.task_type, config.num_classes)
     new_model_metrics = train_lib.get_metrics(config.task_type, config.num_classes)
 
-
     ##############################################################################
     # Train
     ##############################################################################
-    history = {'train_loss': [], 'val_loss': [], 'val_metrics': []} # TODO: aggiungere metriche training
+    history = {'train_loss': [], 'val_loss': [], 'val_metrics': []}  # TODO: aggiungere metriche training
     verbose_print('Begin training', verbose, True)
     for epoch in range(config.num_epochs):
 
@@ -120,7 +111,6 @@ def run_experiment(config, verbose=True):
             if new_model_metrics[config.monitor_metric] > saved_model_metrics[config.monitor_metric]:
                 saved_model_metrics = new_model_metrics
                 torch.save(model.state_dict(), os.path.join(config.exp_dir, 'model.pth'))
-
 
         # reduction of the learning rate
         scheduler.step()
