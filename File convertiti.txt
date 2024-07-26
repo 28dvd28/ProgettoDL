@@ -7,3 +7,6 @@ File convertiti da tensorflow a pytorch:
 - downstream/config.py -> nothing to do
 - downstream/experiments.py <- CHECK IMPORT TRAIN, TO TEST
 - downstream/main.py -> nothing to do
+- train/eval.py <- TO TEST
+- train/train.py <- CHECK TRAIN LOOP, TO TEST
+- train/utils.py -> nothing to do

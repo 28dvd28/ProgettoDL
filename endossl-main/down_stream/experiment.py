@@ -79,6 +79,8 @@ def run_experiment(config, verbose=True):
     verbose_print('Begin training', verbose, True)
     for epoch in range(config.num_epochs):
 
+        # TODO: usare i callback creati in train_lib.py per aggiungere funzionalità al training loop
+
         # training for the fist epoch
         model.train()
         running_loss = 0.0
@@ -118,9 +120,13 @@ def run_experiment(config, verbose=True):
         # creation of the history
         history['train_loss'].append(epoch_train_loss)
         if 'epoch_val_loss' not in locals():
-            epoch_val_loss = [0] * len(new_model_metrics)
+            epoch_val_loss = 0
         history['val_loss'].append(epoch_val_loss)
-        history['val_metrics'].append(new_model_metrics)
+
+        mod_metric = []
+        for metric in new_model_metrics:
+            mod_metric.append(metric.value)
+        history['val_metrics'].append(mod_metric)
 
     #############################################################################
     # End of train evaluation
