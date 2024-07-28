@@ -10,14 +10,6 @@ import pytorch_lightning as pl
 from pytorch_lightning.callbacks.early_stopping import EarlyStopping
 from pytorch_lightning.callbacks import ModelCheckpoint
 from pytorch_lightning.loggers import TensorBoardLogger
-from pytorch_lightning.callbacks import LearningRateMonitor
-
-
-
-
-import tensorflow as tf
-from tensorflow_addons import metrics as tfa_metrics
-from tensorflow_addons import optimizers as tfa_optimizers
 
 from abc import ABC, abstractmethod
 
@@ -86,10 +78,10 @@ class MyMetrics(ABC):
         self.value = 0
 
     @abstractmethod
-    def update(self, predictions, ground_truths):
+    def update_val(self, predictions, ground_truths):
         pass
 
-    def reset(self):
+    def reset_val(self):
         self.value = 0
 
 
@@ -98,8 +90,11 @@ class MyF1Score(MyMetrics):
         super(MyF1Score, self).__init__(name)
         self.f1_score = torchmetrics.F1Score(task='multiclass', num_classes=num_classes, average=average)
 
-    def update(self, predictions, ground_truths):
+    def update_val(self, predictions, ground_truths):
         self.value = self.f1_score(predictions, ground_truths).item()
+
+    def to(self, device):
+        self.f1_score = self.f1_score.to(device)
 
 
 class MyAccuracy(MyMetrics):
@@ -108,8 +103,11 @@ class MyAccuracy(MyMetrics):
         super(MyAccuracy, self).__init__(name)
         self.accuracy = torchmetrics.Accuracy(task='multiclass', num_classes=num_classes, average='macro', top_k=2)
 
-    def update(self, predictions, ground_truths):
+    def update_val(self, predictions, ground_truths):
         self.value = self.accuracy(predictions, ground_truths).item()
+
+    def to(self, device):
+        self.accuracy = self.accuracy.to(device)
 
 
 class MyPrecision(MyMetrics):
@@ -118,8 +116,11 @@ class MyPrecision(MyMetrics):
         super(MyPrecision, self).__init__(name)
         self.precision = torchmetrics.Precision(task='multilabel')
 
-    def update(self, predictions, ground_truths):
+    def update_val(self, predictions, ground_truths):
         self.value = self.precision(predictions, ground_truths).item()
+
+    def to(self, device):
+        self.precision = self.precision.to(device)
 
 
 class MyAUC(MyMetrics):
@@ -128,11 +129,13 @@ class MyAUC(MyMetrics):
         super(MyAUC, self).__init__(name)
         self.auc = MultilabelAUPRC(num_labels=num_labels)
 
-    def update(self, predictions, ground_truths):
+    def update_val(self, predictions, ground_truths):
         self.auc.update(predictions, ground_truths)
         self.value = self.auc.compute()
         self.auc.reset()
 
+    def to(self, device):
+        self.auc = self.auc.to(device)
 
 def get_metrics(task_type: str, num_classes: int):
     if task_type == 'multi_class':

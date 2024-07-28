@@ -2,6 +2,7 @@
 
 import os
 
+import torch
 import torchvision
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
@@ -28,9 +29,13 @@ _LABEL_NUM_MAPPING = {
 
 _SUBSAMPLE_RATE = 25
 
-_CHOLEC80_SPLIT = {'train': range(1, 41),
-                   'validation': range(41, 49),
-                   'test': range(49, 81)}
+# _CHOLEC80_SPLIT = {'train': range(1, 41),
+#                    'validation': range(41, 49),
+#                    'test': range(49, 81)}
+
+_CHOLEC80_SPLIT = {'train': range(1, 2),
+                   'validation': range(1, 2),
+                   'test': range(1, 2)}
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
@@ -44,7 +49,9 @@ _RAND_AUGMENT = transforms.RandAugment(num_ops=3, magnitude=7)
 
 def randaug(image):
     image = resize(image)
-    return _RAND_AUGMENT.forward(image * 255.0) / 255.0
+    image = image * 255.0
+    image = image.to(torch.uint8)
+    return _RAND_AUGMENT.forward(image) / 255.0
 
 
 def get_train_image_transformation(name):
@@ -64,10 +71,10 @@ class CustomCholec80Dataset(Dataset):
         self.all_frame_names, self.all_labels = self.prebuild(video_ids)
 
     def __len__(self):
-        return len(self.all_frame_names)
+        return len(self.all_labels)
 
     def __getitem__(self, idx):
-        img_path = self.all_frame_names[idx]
+        img_path = self.all_frame_names[idx * _SUBSAMPLE_RATE]
         label = self.all_labels[idx]
         if self.with_image_path:
             return self.parse_example_image_path(img_path, label, img_path)
@@ -85,7 +92,7 @@ class CustomCholec80Dataset(Dataset):
             frames = [os.path.join(video_frames_dir, f) for f in os.listdir(video_frames_dir)]
             with open(os.path.join(annos_dir, video_id + '-phase.txt'), 'r') as f:
                 labels = f.readlines()[1:]
-            labels = [l.split('\t')[1][:-1] for l in labels]
+            labels = [l.split(' ')[1][:-1] for l in labels]
             labels = [_LABEL_NUM_MAPPING[l] for l in labels[::_SUBSAMPLE_RATE]][:len(frames)]
             all_frame_names += frames
             all_labels += labels
@@ -93,7 +100,7 @@ class CustomCholec80Dataset(Dataset):
 
     def parse_image(self, image_path):
         img = torchvision.io.read_file(image_path)
-        img = torchvision.io.decode_jpeg(img)
+        img = torchvision.io.decode_png(img)
         return self.transform(img)
 
     def parse_label(self, label):
@@ -128,7 +135,7 @@ if __name__ == '__main__':
     dataloaders = get_pytorch_dataloaders(data_root, 8)
     validation_dataloader = dataloaders['validation']
 
-    for (data_batch, labels_batch) in enumerate(validation_dataloader):
+    for (data_batch, labels_batch) in validation_dataloader:
         print(data_batch.shape)
         print(labels_batch.shape)
         break

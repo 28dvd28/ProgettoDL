@@ -1,4 +1,5 @@
 """Evaluation methods."""
+import os
 
 import numpy as np
 from sklearn.metrics import average_precision_score
@@ -6,6 +7,8 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import precision_recall_fscore_support as score
 import torch
 from torch.utils.tensorboard import SummaryWriter
+
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
 
 def calc_f1(model, ds, agg='video', verbose=0):
@@ -17,15 +20,21 @@ def calc_f1(model, ds, agg='video', verbose=0):
     for batch in ds:
 
         inputs, labels, clip_paths = batch
+        inputs, labels = inputs.to(device), labels.to(device)
+        clip_paths = np.array(list(clip_paths))
         preds = model(inputs)
         preds = torch.argmax(preds, 1)
+
+        preds = preds.cpu()
+        labels = labels.cpu()
 
         all_labels += labels.numpy().tolist()
         all_preds += preds.numpy().tolist()
 
         if agg == 'video':
-            for c, l, p in zip(clip_paths.numpy(), labels.numpy(), preds.numpy()):
-                c = c.decode('utf-8').split('/')[-2]
+            for c, l, p in zip(clip_paths, labels.numpy(), preds.numpy()):
+                c = os.path.normpath(c)
+                c = c.split(os.sep)[-2]
                 if c not in video2labels:
                     video2labels[c] = []
                     video2preds[c] = []
@@ -92,7 +101,12 @@ def calc_map(model, ds, agg='all', verbose=0):
     all_preds = np.empty(())
     for i, batch in enumerate(ds):
         inputs, labels = batch
+        inputs, labels = inputs.to(device), labels.to(device)
         preds = model(inputs)
+
+        preds = preds.cpu()
+        labels = labels.cpu()
+
         if i == 0:
             all_labels = labels.numpy()
             all_preds = preds
