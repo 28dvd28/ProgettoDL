@@ -71,6 +71,7 @@ def run_experiment(config, verbose=True):
     loss = train_lib.get_loss(config.task_type)
     saved_model_metrics = []
     new_model_metrics = train_lib.get_metrics(config.task_type, config.num_classes)
+    callbacks = train_lib.get_callbacks(config.callbacks_names, optimizer, config.exp_dir, config.monitor_metric, config.learning_rate)
 
     ##############################################################################
     # Train
@@ -112,12 +113,26 @@ def run_experiment(config, verbose=True):
                         metric.update_val(outputs, labels)
             epoch_val_loss = running_loss / len(datasets['validation'])
 
-            # save the model if the validation metric is better than the previous one
-            for i in range(len(new_model_metrics)):
-                if new_model_metrics[i].name == config.monitor_metric:
-                    if new_model_metrics[i].value > saved_model_metrics[i].value:
-                        saved_model_metrics = new_model_metrics
-                        torch.save(model.state_dict(), os.path.join(config.exp_dir, 'model.pth'))
+            if 'checkpoint' in config.callbacks_names:
+                # save the model if the validation metric is better than the previous one
+                for i in range(len(new_model_metrics)):
+                    callbacks['checkpoint'].on_save_checkpoint(new_model_metrics[i], model)
+
+            if 'reduce_lr_plateau' in config.callbacks_names:
+                callbacks['reduce_lr_plateau'].step(epoch_val_loss)
+
+            if 'early_stopping' in config.callbacks_names:
+                callbacks['early_stopping'].step(epoch_val_loss)
+                if callbacks['early_stopping'].wait_count == 0:
+                    break
+
+            if 'tensorboard' in config.callbacks_names:
+                callbacks['tensorboard'].add_scalar('Loss/test', epoch_val_loss, epoch)
+
+        if 'step_scheduler' in config.callbacks_names:
+            callbacks['step_scheduler'].step()
+        if 'tensorboard' in config.callbacks_names:
+            callbacks['tensorboard'].add_scalar('Loss/train', epoch_train_loss, epoch)
 
         # reduction of the learning rate
         scheduler.step()
@@ -132,6 +147,9 @@ def run_experiment(config, verbose=True):
         for metric in new_model_metrics:
             mod_metric.append(metric.value)
         history['val_metrics'].append(mod_metric)
+
+    if 'tensorboard' in config.callbacks_names:
+        callbacks['tensorboard'].close()
 
     #############################################################################
     # End of train evaluation

@@ -38,5 +38,5 @@ class Config:
     num_epochs = 5
     batch_size = 256
     validation_freq = 1
-    callbacks_names = ['checkpoint', 'reduce_lr_plateau', 'early_stopping']
+    callbacks_names = ['checkpoint', 'reduce_lr_plateau', 'tensorboard', 'early_stopping', 'step_scheduler']
     manually_load_best_checkpoint = True
