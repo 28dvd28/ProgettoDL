@@ -33,9 +33,11 @@ _SUBSAMPLE_RATE = 25
 #                    'validation': range(41, 49),
 #                    'test': range(49, 81)}
 
+# _CHOLEC80_SPLIT = {'train': range(1, 75),
+#                    'validation': range(75, 81),}
+
 _CHOLEC80_SPLIT = {'train': range(1, 2),
-                   'validation': range(1, 2),
-                   'test': range(1, 2)}
+                   'validation': range(1, 2),}
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
