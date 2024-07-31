@@ -30,13 +30,13 @@ _LABEL_NUM_MAPPING = {
 
 _SUBSAMPLE_RATE = 1
 
-# _CHOLEC80_SPLIT = {'train': range(1, 41),
-#                    'validation': range(41, 49),
-#                    'test': range(49, 81)}
-
-_CHOLEC80_SPLIT = {'train': range(1, 3),
-                   'validation': range(3, 4),
+_CHOLEC80_SPLIT = {'train': range(1, 41),
+                   'validation': range(41, 49),
                    'test': range(49, 81)}
+
+# _CHOLEC80_SPLIT = {'train': range(1, 2),
+#                    'validation': range(1, 2),
+#                    'test': range(1, 2)}
 
 # i = np.random.randint(1, 60)
 # _CHOLEC80_SPLIT = {'train': range(i, i + 15),

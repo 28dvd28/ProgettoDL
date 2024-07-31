@@ -58,7 +58,7 @@ def run_experiment(config, verbose=True):
         model.fc = nn.Linear(model.fc.in_features, config.num_classes)
     elif 'vit' in config.model:
         model = MyViTMSNModel()
-        model.load_state_dict(torch.load(config.saved_model_dir))
+        # model.load_state_dict(torch.load(config.saved_model_dir))
         for param in model.vitMsn.parameters():
             param.requires_grad = False
     else:
@@ -128,25 +128,33 @@ def run_experiment(config, verbose=True):
             bar_eval.close()
             epoch_val_loss = running_loss / len(datasets['validation'])
 
-            if 'checkpoint' in config.callbacks_names:
+            if 'checkpoints' in config.callbacks_names:
                 # save the model if the validation metric is better than the previous one
+                print('-->Saving checkpoints')
                 for i in range(len(new_model_metrics)):
-                    callbacks['checkpoint'].on_save_checkpoint(new_model_metrics[i], model)
+                    callbacks['checkpoints'].on_save_checkpoint(new_model_metrics[i], model)
 
             if 'reduce_lr_plateau' in config.callbacks_names:
+                print('-->Check reduction on plateau')
                 callbacks['reduce_lr_plateau'].step(epoch_val_loss)
 
             if 'early_stopping' in config.callbacks_names:
+                print('-->Check early stopping')
                 callbacks['early_stopping'].step(epoch_val_loss)
-                if callbacks['early_stopping'].wait_count == 0:
+                if callbacks['early_stopping'].end_patience():
                     break
 
             if 'tensorboard' in config.callbacks_names:
+                print('-->Saving tensorboard validation')
                 callbacks['tensorboard'].add_scalar('Loss/test', epoch_val_loss, epoch)
+                for metric in new_model_metrics:
+                    callbacks['tensorboard'].add_scalar(f'Validation {metric.name}/test', metric.value, epoch)
 
         if 'step_scheduler' in config.callbacks_names:
+            print('-->Step scheduler')
             callbacks['step_scheduler'].step()
         if 'tensorboard' in config.callbacks_names:
+            print('-->Saving tensorboard train')
             callbacks['tensorboard'].add_scalar('Loss/train', epoch_train_loss, epoch)
 
         # reduction of the learning rate
@@ -164,6 +172,7 @@ def run_experiment(config, verbose=True):
         history['val_metrics'].append(mod_metric)
 
     if 'tensorboard' in config.callbacks_names:
+        callbacks['tensorboard'].flush()
         callbacks['tensorboard'].close()
 
     #############################################################################
@@ -174,10 +183,10 @@ def run_experiment(config, verbose=True):
         checkpoints = glob.glob(os.path.join(checkpoints_dir, '*'))
         if checkpoints:
             latest = checkpoints[-1]
-            print(f'Load latest checkpoint: {latest}')
+            print(f'Load latest checkpoints: {latest}')
             model.load_state_dict(torch.load(latest))
         else:
-            print('Haven\'t loaded a saved checkpoint')
+            print('Haven\'t loaded a saved checkpoints')
 
     # For the special case of phases, re-extract the dataset with the 'with_image_path'
     # attribute for calculating video-level metrics

@@ -172,12 +172,14 @@ class EarlyStopping:
         else:
             self.wait_count += 1
 
+    def end_patience(self):
+        return self.wait_count > self.patience
+
 
 
 def get_early_stopping_callback(
         monitor_metric='val_accuracy',
         patience=5,
-        verbose=True,
         mode='min'):
     return EarlyStopping(
         monitor=monitor_metric,
@@ -273,8 +275,8 @@ def get_learning_rate_step_scheduler_callback(
 
 def get_callbacks(callbacks_names, optimizer, exp_dir, monitor_metric, learning_rate):
     callbacks = {}
-    if 'checkpoint' in callbacks_names:
-        callbacks['checkpoint'] = get_checkpoint_callback(exp_dir, monitor_metric=monitor_metric)
+    if 'checkpoints' in callbacks_names:
+        callbacks['checkpoints'] = get_checkpoint_callback(exp_dir, monitor_metric=monitor_metric)
     if 'reduce_lr_plateau' in callbacks_names:
         callbacks['reduce_lr_plateau'] = get_reduce_lr_plateau_callback(optimizer)
     if 'step_scheduler' in callbacks_names:

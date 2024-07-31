@@ -40,7 +40,7 @@ class MyViTMSNModel(nn.Module):
 
 def training_loop(config):
 
-    config.batch_size = 1
+    config.batch_size = 5
 
     # Load the dataloader for the cholec80 dataset
     datasets = cholec80_images.get_pytorch_dataloaders(
@@ -74,7 +74,7 @@ def training_loop(config):
             optimizer.zero_grad()
 
             output_target = softmax(model(inputs))
-            mask = torch.randint(0, 2, (config.batch_size, patch_numbers)) == 1
+            mask = torch.randint(0, 2, (inputs.shape[0], patch_numbers)) == 1
             output_anchor = softmax(model(inputs, bool_masked_pos=mask))
 
             loss_value = criterion(output_anchor, output_target)
@@ -99,7 +99,7 @@ def training_loop(config):
                     inputs = torch.tensor(image_processor(inputs)['pixel_values']).to(device)
 
                     output_target = softmax(model(inputs))
-                    mask = torch.randint(0, 2, (config.batch_size, patch_numbers)) == 1
+                    mask = torch.randint(0, 2, (inputs.shape[0], patch_numbers)) == 1
                     output_anchor = softmax(model(inputs, bool_masked_pos=mask))
 
                     loss_value = criterion(output_anchor, output_target)
@@ -150,7 +150,7 @@ def test(config):
             inputs = torch.tensor(image_processor(inputs)['pixel_values']).to(device)
 
             output_target = softmax(model(inputs))
-            mask = torch.randint(0, 2, (config.batch_size, patch_numbers))
+            mask = torch.randint(0, 2, (inputs.shape[0], patch_numbers))
             output_anchor = softmax(model(inputs, bool_masked_pos=mask))
 
             loss_value = criterion(output_anchor, output_target)
@@ -161,4 +161,4 @@ def test(config):
 
 
 if __name__ == '__main__':
-    test(Config())
+    training_loop(Config())
