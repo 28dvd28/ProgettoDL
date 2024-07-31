@@ -6,6 +6,7 @@ import torch
 import torchvision
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
+import numpy as np
 
 _CHOLEC80_PHASES_WEIGHTS = {
     0: 1.9219914802981897,
@@ -27,17 +28,21 @@ _LABEL_NUM_MAPPING = {
     'CalotTriangleDissection': 6
 }
 
-_SUBSAMPLE_RATE = 25
+_SUBSAMPLE_RATE = 1
 
 # _CHOLEC80_SPLIT = {'train': range(1, 41),
 #                    'validation': range(41, 49),
 #                    'test': range(49, 81)}
 
-# _CHOLEC80_SPLIT = {'train': range(1, 75),
-#                    'validation': range(75, 81),}
+_CHOLEC80_SPLIT = {'train': range(1, 3),
+                   'validation': range(3, 4),
+                   'test': range(49, 81)}
 
-_CHOLEC80_SPLIT = {'train': range(1, 2),
-                   'validation': range(1, 2),}
+# i = np.random.randint(1, 60)
+# _CHOLEC80_SPLIT = {'train': range(i, i + 15),
+#                    'validation': range(i + 15, i + 20),
+#                    'test': range(79, 81)}
+
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
@@ -94,7 +99,7 @@ class CustomCholec80Dataset(Dataset):
             frames = [os.path.join(video_frames_dir, f) for f in os.listdir(video_frames_dir)]
             with open(os.path.join(annos_dir, video_id + '-phase.txt'), 'r') as f:
                 labels = f.readlines()[1:]
-            labels = [l.split(' ')[1][:-1] for l in labels]
+            labels = [l.split('\t')[1][:-1] for l in labels]
             labels = [_LABEL_NUM_MAPPING[l] for l in labels[::_SUBSAMPLE_RATE]][:len(frames)]
             all_frame_names += frames
             all_labels += labels
@@ -127,7 +132,7 @@ def get_pytorch_dataloaders(data_root, batch_size, train_transformation='randaug
             transform=get_train_image_transformation(train_transformation),
             with_image_path=with_image_path
         )
-        dataloaders[split] = DataLoader(dataset, batch_size=batch_size)
+        dataloaders[split] = DataLoader(dataset, shuffle=True, batch_size=batch_size)
     return dataloaders
 
 
