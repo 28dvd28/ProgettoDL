@@ -4,10 +4,15 @@ import sys
 import os
 from traceback import print_exc
 
+from networkx.algorithms.bipartite.cluster import modes
+from sympy.physics.vector import outer
+from triton.ops.blocksparse import softmax
+
 sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 import torch
 import torch.nn as nn
+from torch.nn.functional import softmax
 from torchvision import models
 from tqdm import tqdm
 
@@ -72,7 +77,6 @@ def run_experiment(config, verbose=True):
         config.momentum,
         config.weight_decay,
     )
-    scheduler = torch.optim.lr_scheduler.ExponentialLR(optimizer, gamma=0.9)  # TODO: controllare meglio il decay del LR
     loss = train_lib.get_loss(config.task_type)
     saved_model_metrics = []
     new_model_metrics = train_lib.get_metrics(config.task_type, config.num_classes)
@@ -81,11 +85,9 @@ def run_experiment(config, verbose=True):
     ##############################################################################
     # Train
     ##############################################################################
-    history = {'train_loss': [], 'val_loss': [], 'val_metrics': []}  # TODO: aggiungere metriche training
+    history = {'train_loss': [], 'val_loss': [], 'val_metrics': []}
     verbose_print('Begin training', verbose, True)
     for epoch in range(config.num_epochs):
-
-        # TODO: usare i callback creati in train_lib.py per aggiungere funzionalità al training loop
 
         # training for the fist epoch
         model.train()
@@ -95,7 +97,7 @@ def run_experiment(config, verbose=True):
             inputs, labels = inputs.to(device), labels.to(device)
 
             optimizer.zero_grad()
-            outputs = model(inputs)
+            outputs = softmax(model(inputs), dim=1)
             loss_value = loss(outputs, labels)
             loss_value.backward()
             optimizer.step()
@@ -146,19 +148,16 @@ def run_experiment(config, verbose=True):
 
             if 'tensorboard' in config.callbacks_names:
                 print('-->Saving tensorboard validation')
-                callbacks['tensorboard'].add_scalar('Loss/test', epoch_val_loss, epoch)
+                callbacks['tensorboard'].add_scalar('Validation/Loss', epoch_val_loss, epoch)
                 for metric in new_model_metrics:
-                    callbacks['tensorboard'].add_scalar(f'Validation {metric.name}/test', metric.value, epoch)
+                    callbacks['tensorboard'].add_scalar(f'Validation/{metric.name}', metric.value, epoch)
 
         if 'step_scheduler' in config.callbacks_names:
             print('-->Step scheduler')
             callbacks['step_scheduler'].step()
         if 'tensorboard' in config.callbacks_names:
             print('-->Saving tensorboard train')
-            callbacks['tensorboard'].add_scalar('Loss/train', epoch_train_loss, epoch)
-
-        # reduction of the learning rate
-        scheduler.step()
+            callbacks['tensorboard'].add_scalar('Train/Loss', epoch_train_loss, epoch)
 
         # creation of the history
         history['train_loss'].append(epoch_train_loss)

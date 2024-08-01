@@ -89,10 +89,8 @@ def calc_f1(model, ds, agg='video', verbose=0):
 
             'frame_acc': np.around(
                 frame_mets['accuracy'] * 100, 2),
-            'frame_macro_f1': np.around(
-                frame_mets['macro avg']['f1-score'] * 100, 2),
-            'frame_micro_f1': np.around(
-                frame_mets['weighted avg']['f1-score'] * 100, 2),
+            'frame_macro_f1': np.around(frame_mets['macro avg']['f1-score'] * 100, 2),
+            'frame_micro_f1': np.around(frame_mets['weighted avg']['f1-score'] * 100, 2),
         }
 
 

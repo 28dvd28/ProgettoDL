@@ -5,6 +5,7 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchmetrics
+from sympy import factor
 from torcheval.metrics import MultilabelAUPRC
 from torch.optim.lr_scheduler import ReduceLROnPlateau, MultiStepLR
 from torch.utils.tensorboard import SummaryWriter
@@ -273,15 +274,15 @@ def get_learning_rate_step_scheduler_callback(
     )
 
 
-def get_callbacks(callbacks_names, optimizer, exp_dir, monitor_metric, learning_rate):
+def get_callbacks(callbacks_names, optimizer, exp_dir, monitor_metric, gamma):
     callbacks = {}
     if 'checkpoints' in callbacks_names:
         callbacks['checkpoints'] = get_checkpoint_callback(exp_dir, monitor_metric=monitor_metric)
     if 'reduce_lr_plateau' in callbacks_names:
-        callbacks['reduce_lr_plateau'] = get_reduce_lr_plateau_callback(optimizer)
+        callbacks['reduce_lr_plateau'] = get_reduce_lr_plateau_callback(optimizer, factor=gamma)
     if 'step_scheduler' in callbacks_names:
         callbacks['step_scheduler'] = get_learning_rate_step_scheduler_callback(
-            optimizer=optimizer)
+            optimizer=optimizer, factor=gamma)
     if 'early_stopping' in callbacks_names:
         callbacks['early_stopping'] = get_early_stopping_callback()
     if 'tensorboard' in callbacks_names:

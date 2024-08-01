@@ -12,7 +12,7 @@ class Config:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    exp_dir = os.path.join(par_dir, 'exps', 'tmp')
+    exp_dir = os.path.join(par_dir, 'exps', 'classifierCholec80', 'tmp')
 
     # dataset
     dataset_name = 'cholec80'
