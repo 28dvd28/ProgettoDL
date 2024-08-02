@@ -19,6 +19,7 @@ class MyViTMSNModel(nn.Module):
         self.vitMsn = ViTMSNModel.from_pretrained(pretrained_model_name_or_path)
         self.classifier = nn.Linear(self.vitMsn.config.hidden_size, 1024)
         self.device = device
+        self.ending_relu = False
 
         if self.vitMsn.embeddings.mask_token is None:
             self.vitMsn.embeddings.mask_token = nn.Parameter(torch.zeros(1, 1, self.vitMsn.config.hidden_size))
@@ -29,5 +30,8 @@ class MyViTMSNModel(nn.Module):
             output = self.vitMsn(inputs, bool_masked_pos=bool_masked_pos)[0]
         else:
             output = self.vitMsn(inputs)[0]
+        output = nn.functional.relu(output)
         output = self.classifier(output[:, 0, :])
+        if self.ending_relu:
+            output = nn.functional.relu(output)
         return output

@@ -1,5 +1,6 @@
 import sys
 import os
+
 import torch
 import torch.nn as nn
 import torch.optim as optim
@@ -107,7 +108,7 @@ def training_loop():
         model.eval()
         i = 0
 
-        with torch.no_grad:
+        with torch.no_grad():
             for inputs_target, inputs_anchor, _ in bar:
                 inputs_anchor, inputs_target = inputs_anchor.to(device), inputs_target.to(device)
                 mask = mask_generator(inputs_target.shape[0], patch_numbers)
@@ -123,7 +124,7 @@ def training_loop():
                 i += 1
 
             bar.close()
-            epoch_test_loss = running_validation_loss / len(datasets['train'])
+            epoch_test_loss = running_validation_loss / len(datasets['validation'])
 
         writer.add_scalar(f'Averaged losses for epoch/train', epoch_train_loss, epoch)
         writer.add_scalar(f'Averaged losses for epoch/validation', epoch_test_loss, epoch)
@@ -135,6 +136,7 @@ def training_loop():
             concatenated_string = f'Epoch: {epoch} - Train loss: {epoch_train_loss} - Validation loss: {epoch_test_loss}\n'
             file.write(concatenated_string)
 
+    writer.flush()
     writer.close()
 
 def test_loop(model_path: str):
@@ -158,7 +160,6 @@ def test_loop(model_path: str):
 
     running_test_loss = 0.0
     bar = tqdm(datasets['test'], total=len(datasets['test']), desc=f'Test', ncols=100)
-    model.train()
     i = 0
 
     for inputs_target, inputs_anchor, _ in bar:
@@ -177,7 +178,11 @@ def test_loop(model_path: str):
         i += 1
 
     bar.close()
+    writer.add_scalar(f'TestLoop/FinalLoss', running_test_loss / len(datasets["test"]), 1)
     print(f'Average loss for test: {running_test_loss / len(datasets["test"])}')
+
+    writer.flush()
+    writer.close()
 
 
 if __name__ == '__main__':
