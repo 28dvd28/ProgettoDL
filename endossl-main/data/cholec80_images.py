@@ -7,6 +7,8 @@ import torchvision
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
+_SUBSAMPLE_RATE = 25
+
 _LABEL_NUM_MAPPING = {
     'GallbladderPackaging': 0,
     'CleaningCoagulation': 1,
@@ -70,14 +72,15 @@ class CustomCholec80Dataset(Dataset):
         video_ids (list): List of the video ids to use. It will consider only the frames in the folders corresponding to
         this ids.
         transform (function): Transformation function to apply to the images.
-        with_image_path (bool): If True, the __getitem__ method will return also the path of the image.
+        double_img (bool): If True, the __getitem__ method will return the same image twice with different
+        random augmentation
 
     """
-    def __init__(self, data_root, video_ids, transform=resize, with_image_path=False):
+    def __init__(self, data_root, video_ids, transform=resize, double_img=False):
         self.video_ids = video_ids
         self.data_root = data_root
         self.transform = transform
-        self.with_image_path = with_image_path
+        self.double_img = double_img
 
         self.all_frame_names, self.all_labels = self.prebuild(video_ids)
 
@@ -87,8 +90,8 @@ class CustomCholec80Dataset(Dataset):
     def __getitem__(self, idx):
         img_path = self.all_frame_names[idx]
         label = self.all_labels[idx]
-        if self.with_image_path:
-            return self.parse_example_image_path(img_path, label, img_path)
+        if self.double_img:
+            return self.parse_example_double_image(img_path, label)
         else:
             return self.parse_example(img_path, label)
 
@@ -101,6 +104,7 @@ class CustomCholec80Dataset(Dataset):
         for video_id in video_ids:
             video_frames_dir = os.path.join(frames_dir, video_id)
             frames = [os.path.join(video_frames_dir, f) for f in os.listdir(video_frames_dir)]
+            frames = [frames[i] for i in range(len(frames)) if i % _SUBSAMPLE_RATE == 0]
             with open(os.path.join(annos_dir, video_id + '-phase.txt'), 'r') as f:
                 labels = f.readlines()[1:]
             labels = [l.split('\t')[1][:-1] for l in labels]
@@ -124,14 +128,14 @@ class CustomCholec80Dataset(Dataset):
         return (self.parse_image(image_path),
                 self.parse_label(label))
 
-    def parse_example_image_path(self, image_path, label, image_path_):
+    def parse_example_double_image(self, image_path, label):
         """Parse the example in input, returning the image, the label and the path of the image."""
         return (self.parse_image(image_path),
-                self.parse_label(label),
-                image_path_)
+                self.parse_image(image_path),
+                self.parse_label(label))
 
 
-def get_pytorch_dataloaders(data_root, batch_size, with_image_path=False)->dict:
+def get_pytorch_dataloaders(data_root, batch_size, double_img=False)->dict:
     """Function that return a dictionary with the dataloaders for the Cholec80 dataset. Will contain a dataloader for
     train, test and validation set. For the training set, the images will be augmented and it is applied the shuffle.
     The validation and test dataloaders will only apply resize of the images and there will be no shuffle.
@@ -157,7 +161,7 @@ def get_pytorch_dataloaders(data_root, batch_size, with_image_path=False)->dict:
             data_root,
             [f'video{i:02}' for i in ids_range],
             transform=get_train_image_transformation(train_transformation),
-            with_image_path=with_image_path
+            double_img=double_img
         )
         if split == 'train':
             dataloaders[split] = DataLoader(dataset, shuffle=True, batch_size=batch_size)
@@ -169,9 +173,11 @@ def get_pytorch_dataloaders(data_root, batch_size, with_image_path=False)->dict:
 
 if __name__ == '__main__':
     par_dir = os.path.realpath(__file__ + '/../../')
-    data_root = os.path.join(par_dir, 'cholec80', 'cholec80')
+    data_root = os.path.join(par_dir, 'cholec80')
     dataloaders = get_pytorch_dataloaders(data_root, 8)
     validation_dataloader = dataloaders['validation']
+
+    print('Number of batches in the validation dataloader: ', len(dataloaders['validation']))
 
     for (data_batch, labels_batch) in validation_dataloader:
         print(data_batch.shape)
