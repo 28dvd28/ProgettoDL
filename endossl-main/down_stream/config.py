@@ -12,7 +12,7 @@ class Config:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    exp_dir = os.path.join(par_dir, 'exps', 'classifierCholec80', 'tmp')
+    exp_dir = os.path.join(par_dir, 'exps', 'classifierCholec80_pretrained', 'tmp')
 
     # dataset
     dataset_name = 'cholec80'
@@ -22,7 +22,7 @@ class Config:
 
     is_linear_evaluation = False
     model = 'vits'
-    saved_model_dir = os.path.join('../exps/PretrainedModels', f'best_model1.pth')
+    saved_model_dir = os.path.join('endossl-main/exps/PretrainedModels/tmp/checkpoints', f'best_model1.pth')
     task_type = 'multi_class'
     monitor_metric = 'val_macro_f1'
     input_dim = {'vits': 384, 'vitb': 768, 'vitl': 1024, 'resnet50': 2048}[model]

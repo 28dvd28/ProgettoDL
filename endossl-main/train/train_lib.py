@@ -15,6 +15,8 @@ from abc import ABC, abstractmethod
 
 def cross_entropy(prediction: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
     return_val = torch.tensor(0).to(target.device).to(target.dtype)
+    if target.shape[0] == 1:
+        return - target.dot(torch.log(prediction))
     for i in range(target.shape[0]):
         return_val += target[i].dot(torch.log(prediction[i]))
     return -return_val / target.shape[0]

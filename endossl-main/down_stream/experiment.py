@@ -12,7 +12,7 @@ sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 import torch
 import torch.nn as nn
-from torch.nn.functional import softmax
+from torch.nn.functional import softmax, one_hot
 from torchvision import models
 from tqdm import tqdm
 
@@ -63,7 +63,8 @@ def run_experiment(config, verbose=True):
         model.fc = nn.Linear(model.fc.in_features, config.num_classes)
     elif 'vit' in config.model:
         model = MyViTMSNModel()
-        # model.load_state_dict(torch.load(config.saved_model_dir))
+        model.load_state_dict(torch.load(config.saved_model_dir))
+        model.classifier = nn.Linear(model.classifier.in_features, config.num_classes)
         for param in model.vitMsn.parameters():
             param.requires_grad = False
     else:
@@ -92,13 +93,13 @@ def run_experiment(config, verbose=True):
         # training for the fist epoch
         model.train()
         running_loss = 0.0
-        bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch: {epoch}')
+        bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch: {epoch}', ncols=100)
         for inputs, labels in bar:
             inputs, labels = inputs.to(device), labels.to(device)
 
             optimizer.zero_grad()
             outputs = softmax(model(inputs), dim=1)
-            loss_value = loss(outputs, labels)
+            loss_value = loss(outputs, one_hot(labels).to(torch.float))
             loss_value.backward()
             optimizer.step()
             running_loss += loss_value.item()
@@ -118,11 +119,11 @@ def run_experiment(config, verbose=True):
             for metric in new_model_metrics:
                 metric.reset_val()
             with torch.no_grad():
-                bar_eval = tqdm(datasets['validation'], total=len(datasets['validation']), desc=f'Test of epoch: {epoch}')
+                bar_eval = tqdm(datasets['validation'], total=len(datasets['validation']), desc=f'Test of epoch: {epoch}', ncols=100)
                 for inputs, labels in bar_eval:
                     inputs, labels = inputs.to(device), labels.to(device)
                     outputs = model(inputs)
-                    loss_value = loss(outputs, labels)
+                    loss_value = loss(outputs, one_hot(labels).to(torch.float))
                     running_loss += loss_value.item()
                     for metric in new_model_metrics:
                         metric.update_val(outputs, labels)
