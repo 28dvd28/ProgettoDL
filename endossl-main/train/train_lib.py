@@ -5,13 +5,19 @@ import torch
 import torch.nn as nn
 import torch.optim as optim
 import torchmetrics
-from sympy import factor
 from torcheval.metrics import MultilabelAUPRC
 from torch.optim.lr_scheduler import ReduceLROnPlateau, MultiStepLR
 from torch.utils.tensorboard import SummaryWriter
 
 
 from abc import ABC, abstractmethod
+
+
+def cross_entropy(prediction: torch.Tensor, target: torch.Tensor) -> torch.Tensor:
+    return_val = torch.tensor(0).to(target.device).to(target.dtype)
+    for i in range(target.shape[0]):
+        return_val += target[i].dot(torch.log(prediction[i]))
+    return -return_val / target.shape[0]
 
 
 def get_linear_model(input_dim: int, output_dim: int):
@@ -33,7 +39,7 @@ class LinearFineTuneModel(nn.Module):
 
 def get_loss(task_type: str):
     if task_type == 'multi_class':
-        return nn.CrossEntropyLoss()
+        return cross_entropy
     elif task_type == 'multi_label':
         return nn.BCEWithLogitsLoss()
     else:
@@ -76,6 +82,7 @@ class MyMetrics(ABC):
     def __init__(self, name):
         self.name = name
         self.value = 0
+        self.counter = 0
 
     @abstractmethod
     def update_val(self, predictions, ground_truths):
@@ -83,6 +90,7 @@ class MyMetrics(ABC):
 
     def reset_val(self):
         self.value = 0
+        self.counter = 0
 
 
 class MyF1Score(MyMetrics):
@@ -91,7 +99,10 @@ class MyF1Score(MyMetrics):
         self.f1_score = torchmetrics.F1Score(task='multiclass', num_classes=num_classes, average=average)
 
     def update_val(self, predictions, ground_truths):
-        self.value = self.f1_score(predictions, ground_truths).item()
+        self.counter += 1
+        self.value = (self.value * (self.counter - 1))
+        self.value += self.f1_score(predictions, ground_truths).item()
+        self.value = self.value / self.counter
 
     def to(self, device):
         self.f1_score = self.f1_score.to(device)
@@ -104,7 +115,10 @@ class MyAccuracy(MyMetrics):
         self.accuracy = torchmetrics.Accuracy(task='multiclass', num_classes=num_classes, average='macro', top_k=2)
 
     def update_val(self, predictions, ground_truths):
+        self.counter += 1
+        self.value = (self.value * (self.counter - 1))
         self.value = self.accuracy(predictions, ground_truths).item()
+        self.value = self.value / self.counter
 
     def to(self, device):
         self.accuracy = self.accuracy.to(device)
@@ -117,7 +131,10 @@ class MyPrecision(MyMetrics):
         self.precision = torchmetrics.Precision(task='multilabel')
 
     def update_val(self, predictions, ground_truths):
+        self.counter += 1
+        self.value = (self.value * (self.counter - 1))
         self.value = self.precision(predictions, ground_truths).item()
+        self.value = self.value / self.counter
 
     def to(self, device):
         self.precision = self.precision.to(device)
@@ -131,7 +148,10 @@ class MyAUC(MyMetrics):
 
     def update_val(self, predictions, ground_truths):
         self.auc.update(predictions, ground_truths)
+        self.counter += 1
+        self.value = (self.value * (self.counter - 1))
         self.value = self.auc.compute()
+        self.value = self.value / self.counter
         self.auc.reset()
 
     def to(self, device):

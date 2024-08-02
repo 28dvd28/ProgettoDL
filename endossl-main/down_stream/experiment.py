@@ -113,6 +113,7 @@ def run_experiment(config, verbose=True):
 
         # validation
         if epoch % config.validation_freq == 0:
+            model.eval()
             running_loss = 0.0
             for metric in new_model_metrics:
                 metric.reset_val()

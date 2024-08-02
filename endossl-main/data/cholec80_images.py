@@ -34,15 +34,6 @@ _CHOLEC80_SPLIT = {'train': range(1, 41),
                    'validation': range(41, 49),
                    'test': range(49, 81)}
 
-# _CHOLEC80_SPLIT = {'train': range(1, 2),
-#                    'validation': range(1, 2),
-#                    'test': range(1, 2)}
-
-# i = np.random.randint(1, 60)
-# _CHOLEC80_SPLIT = {'train': range(i, i + 15),
-#                    'validation': range(i + 15, i + 20),
-#                    'test': range(79, 81)}
-
 
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
@@ -132,7 +123,11 @@ def get_pytorch_dataloaders(data_root, batch_size, train_transformation='randaug
             transform=get_train_image_transformation(train_transformation),
             with_image_path=with_image_path
         )
-        dataloaders[split] = DataLoader(dataset, shuffle=True, batch_size=batch_size)
+        if split == 'train':
+            dataloaders[split] = DataLoader(dataset, shuffle=True, batch_size=batch_size)
+        else:
+            dataloaders[split] = DataLoader(dataset, shuffle=True, batch_size=batch_size)
+
     return dataloaders
 
 
