@@ -43,11 +43,11 @@ def training_loop(config):
     config.batch_size = 150
 
     # Load the dataloader for the cholec80 dataset
-    datasets = cholec80_images.get_pytorch_dataloaders(
-        data_root=config.data_root,
-        batch_size=config.batch_size,
-        train_transformation=config.train_transformation,
-    )
+    # datasets = cholec80_images.get_pytorch_dataloaders(
+    #     data_root=config.data_root,
+    #     batch_size=config.batch_size,
+    #     train_transformation=config.train_transformation,
+    # )
 
     model = MyViTMSNModel() # Load the model
     model.to(device)
