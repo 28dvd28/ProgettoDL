@@ -2,12 +2,6 @@
 import glob
 import sys
 import os
-from traceback import print_exc
-
-from networkx.algorithms.bipartite.cluster import modes
-from sympy.physics.vector import outer
-from triton.ops.blocksparse import softmax
-
 sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 import torch
@@ -63,8 +57,10 @@ def run_experiment(config, verbose=True):
         model.fc = nn.Linear(model.fc.in_features, config.num_classes)
     elif 'vit' in config.model:
         model = MyViTMSNModel()
-        model.load_state_dict(torch.load(config.saved_model_dir))
         model.classifier = nn.Linear(model.classifier.in_features, config.num_classes)
+        config.saved_model_dir = os.path.join('endossl-main/exps/classifierCholec80/tmp/checkpoints', f'epoch_01.pth')
+        model.load_state_dict(torch.load(config.saved_model_dir))
+
         for param in model.vitMsn.parameters():
             param.requires_grad = False
     else:
@@ -95,6 +91,7 @@ def run_experiment(config, verbose=True):
         running_loss = 0.0
         bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch: {epoch}', ncols=100)
         for inputs, labels in bar:
+            break
             inputs, labels = inputs.to(device), labels.to(device)
 
             optimizer.zero_grad()
@@ -122,7 +119,7 @@ def run_experiment(config, verbose=True):
                 bar_eval = tqdm(datasets['validation'], total=len(datasets['validation']), desc=f'Test of epoch: {epoch}', ncols=100)
                 for inputs, labels in bar_eval:
                     inputs, labels = inputs.to(device), labels.to(device)
-                    outputs = model(inputs)
+                    outputs = softmax(model(inputs), dim=1)
                     loss_value = loss(outputs, one_hot(labels).to(torch.float))
                     running_loss += loss_value.item()
                     for metric in new_model_metrics:
@@ -179,6 +176,26 @@ def run_experiment(config, verbose=True):
     #############################################################################
     # End of train evaluation
     #############################################################################
+
+    test_evaluation(config, model)
+
+def test_evaluation(config, model = None, verbose=True):
+    if model is None:
+        if config.is_linear_evaluation:
+            model = train_lib.get_linear_model(
+                input_dim=config.input_dim, output_dim=config.num_classes
+            )
+        elif config.model == 'resnet50':
+            model = models.resnet50()
+            model.fc = nn.Linear(model.fc.in_features, config.num_classes)
+        elif 'vit' in config.model:
+            model = MyViTMSNModel()
+            model.classifier = nn.Linear(model.classifier.in_features, config.num_classes)
+            for param in model.vitMsn.parameters():
+                param.requires_grad = False
+        else:
+            raise ValueError('Invalid model name: {}'.format(config.model))
+
     if config.manually_load_best_checkpoint:
         checkpoints_dir = os.path.join(config.exp_dir, 'checkpoints')
         checkpoints = glob.glob(os.path.join(checkpoints_dir, '*'))
@@ -188,6 +205,8 @@ def run_experiment(config, verbose=True):
             model.load_state_dict(torch.load(latest))
         else:
             print('Haven\'t loaded a saved checkpoints')
+
+    model.to(device)
 
     # For the special case of phases, re-extract the dataset with the 'with_image_path'
     # attribute for calculating video-level metrics
@@ -206,4 +225,4 @@ def run_experiment(config, verbose=True):
         label_key=config.label_key,
         exp_dir=config.exp_dir,
         epoch=config.num_epochs)
-    return mets, history
+    return mets

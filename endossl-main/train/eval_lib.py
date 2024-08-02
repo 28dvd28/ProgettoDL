@@ -7,6 +7,9 @@ from sklearn.metrics import classification_report
 from sklearn.metrics import precision_recall_fscore_support as score
 import torch
 from torch.utils.tensorboard import SummaryWriter
+from tqdm import tqdm
+from torch.nn.functional import softmax
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -17,12 +20,13 @@ def calc_f1(model, ds, agg='video', verbose=0):
 
     all_labels = []
     all_preds = []
+    bar = tqdm(ds, total=len(ds), desc=f'Calc_f1', ncols=100)
     for batch in ds:
 
         inputs, labels, clip_paths = batch
         inputs, labels = inputs.to(device), labels.to(device)
         clip_paths = np.array(list(clip_paths))
-        preds = model(inputs)
+        preds = softmax(model(inputs), dim=1)
         preds = torch.argmax(preds, 1)
 
         preds = preds.cpu()
@@ -40,6 +44,7 @@ def calc_f1(model, ds, agg='video', verbose=0):
                     video2preds[c] = []
                 video2labels[c].append(l)
                 video2preds[c].append(p)
+        bar.update(1)
 
     # anyway calculate frame-level metrics
     all_labels = np.asarray(all_labels)
@@ -145,9 +150,9 @@ def end_of_training_evaluation(
 
     elif label_key == 'segment':
         mets = {}
-        for k, v in calc_f1(model, validation_ds, agg='video').items():
+        for k, v in calc_f1(model, validation_ds, agg='frame').items():
             mets[f'val_{k}'] = v
-        for k, v in calc_f1(model, test_ds, agg='video').items():
+        for k, v in calc_f1(model, test_ds, agg='frame').items():
             mets[f'test_{k}'] = v
 
     else:

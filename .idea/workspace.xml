@@ -4,11 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.01 1/08/2024">
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.04 2/08/2024">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/config.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/experiment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/train/train_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/train/train_lib.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/train/eval_lib.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/train/eval_lib.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +84,7 @@
       <window_info id="Pull Requests" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19453125" />
-      <window_info id="Commit" order="1" weight="0.23723958" />
+      <window_info id="Commit" order="1" weight="0.19453125" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
@@ -94,7 +94,7 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.25242248" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.51405036" />
@@ -215,7 +215,7 @@
       <workItem from="1722456083768" duration="5774000" />
       <workItem from="1722522317242" duration="16833000" />
       <workItem from="1722552034673" duration="5808000" />
-      <workItem from="1722594048977" duration="2984000" />
+      <workItem from="1722594048977" duration="13306000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
@@ -249,7 +249,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722530844879</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="Commit.04 2/08/2024">
+      <option name="closed" value="true" />
+      <created>1722597766840</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1722597766840</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -260,7 +268,8 @@
     <MESSAGE value="Commit.01 26/07/2024: terminata conversione altri file" />
     <MESSAGE value="Commit.01 28/07/2024: training di base senza errori comepletato" />
     <MESSAGE value="Commit.01 1/08/2024" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit.01 1/08/2024" />
+    <MESSAGE value="Commit.04 2/08/2024" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit.04 2/08/2024" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/Progetto$FlowNet2.coverage" NAME="FlowNet2 Coverage Results" MODIFIED="1721689721592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
