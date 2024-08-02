@@ -10,10 +10,10 @@ import torch
 import torch.nn as nn
 from torch.nn.functional import softmax
 from torchvision import models
+from torch.utils.tensorboard import SummaryWriter
 from tqdm import tqdm
 
 from data import polypset_dataloader
-from train import eval_lib
 from train import train_lib
 from pretraining_ViT import MyViTMSNModel
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
@@ -30,6 +30,7 @@ def run_experiment(config, verbose=True):
     """Stand-alone function for running an experiment."""
 
     config.num_classes = 4
+    config.batch_size = 512
 
     verbose_print('Config:', verbose)
     attr_names = [i for i in dir(config) if not i.startswith('__')]
@@ -71,15 +72,16 @@ def run_experiment(config, verbose=True):
     model = model.to(device)
     optimizer = train_lib.get_optimizer(
         model,
-        config.optimize_name,
-        config.learning_rate,
+        'adam',
+        0.1,
         config.momentum,
         config.weight_decay,
     )
-    loss = torch.nn.MSELoss()
+    loss = torch.nn.SmoothL1Loss()
     saved_model_metrics = []
-    new_model_metrics = train_lib.get_metrics(config.task_type, config.num_classes)
-    callbacks = train_lib.get_callbacks(config.callbacks_names, optimizer, config.exp_dir, config.monitor_metric, config.learning_rate)
+    new_model_metrics = train_lib.MyIntersectionOverUnion('val_IoU')
+    old_model_metrics = None
+    callbacks = train_lib.get_callbacks(config.callbacks_names, optimizer, config.exp_dir, 'val_IoU', config.learning_rate)
 
     ##############################################################################
     # Train
@@ -93,39 +95,35 @@ def run_experiment(config, verbose=True):
         running_loss = 0.0
         bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch: {epoch}')
         for inputs, labels in bar:
-            inputs, labels = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device), labels.to(torch.float).to(device)
 
             optimizer.zero_grad()
-            outputs = softmax(model(inputs), dim=1)
+            outputs = nn.functional.relu(model(inputs))
             loss_value = loss(outputs, labels)
             loss_value.backward()
             optimizer.step()
             running_loss += loss_value.item()
 
-            bar.set_postfix(loss=loss_value.item() / (bar.n + 1))
+            bar.set_postfix(loss=loss_value.item())
         bar.close()
 
         epoch_train_loss = running_loss / len(datasets['train'])
-
-        for metric in new_model_metrics:
-            metric.to(device)
 
         # validation
         if epoch % config.validation_freq == 0:
             model.eval()
             running_loss = 0.0
-            for metric in new_model_metrics:
-                metric.reset_val()
+            new_model_metrics.reset_val()
             with torch.no_grad():
                 bar_eval = tqdm(datasets['validation'], total=len(datasets['validation']), desc=f'Test of epoch: {epoch}')
                 for inputs, labels in bar_eval:
-                    inputs, labels = inputs.to(device), labels.to(device)
-                    outputs = model(inputs)
+                    inputs, labels = inputs.to(device), labels.to(torch.float).to(device)
+                    outputs = nn.functional.relu(model(inputs))
                     loss_value = loss(outputs, labels)
                     running_loss += loss_value.item()
-                    for metric in new_model_metrics:
-                        metric.update_val(outputs, labels)
-                    bar_eval.set_postfix(loss=loss_value.item() / (bar_eval.n + 1))
+                    for i in range(labels.shape[0]):
+                        new_model_metrics.update_val(outputs[i], labels[i])
+                    bar_eval.set_postfix(loss=loss_value.item(), IoU=new_model_metrics.value)
 
             bar_eval.close()
             epoch_val_loss = running_loss / len(datasets['validation'])
@@ -133,8 +131,9 @@ def run_experiment(config, verbose=True):
             if 'checkpoints' in config.callbacks_names:
                 # save the model if the validation metric is better than the previous one
                 print('-->Saving checkpoints')
-                for i in range(len(new_model_metrics)):
-                    callbacks['checkpoints'].on_save_checkpoint(new_model_metrics[i], model)
+                if old_model_metrics is None or old_model_metrics < new_model_metrics:
+                    old_model_metrics = new_model_metrics
+                    torch.save(model.state_dict(), os.path.join(config.exp_dir, 'checkpoints', f'best_model_0{epoch}.pth'))
 
             if 'reduce_lr_plateau' in config.callbacks_names:
                 print('-->Check reduction on plateau')
@@ -149,8 +148,7 @@ def run_experiment(config, verbose=True):
             if 'tensorboard' in config.callbacks_names:
                 print('-->Saving tensorboard validation')
                 callbacks['tensorboard'].add_scalar('Validation/Loss', epoch_val_loss, epoch)
-                for metric in new_model_metrics:
-                    callbacks['tensorboard'].add_scalar(f'Validation/{metric.name}', metric.value, epoch)
+                callbacks['tensorboard'].add_scalar(f'Validation/{new_model_metrics.name}', new_model_metrics.value, epoch)
 
         if 'step_scheduler' in config.callbacks_names:
             print('-->Step scheduler')
@@ -166,9 +164,7 @@ def run_experiment(config, verbose=True):
         history['val_loss'].append(epoch_val_loss)
 
         mod_metric = []
-        for metric in new_model_metrics:
-            mod_metric.append(metric.value)
-        history['val_metrics'].append(mod_metric)
+        history['val_metrics'].append(new_model_metrics.value)
 
     if 'tensorboard' in config.callbacks_names:
         callbacks['tensorboard'].flush()
@@ -196,12 +192,20 @@ def run_experiment(config, verbose=True):
         train_transformation=config.train_transformation,
         with_image_path=True,
     )
+    metric = train_lib.MyIntersectionOverUnion('IoU')
+    log_dir = os.path.join(config.exp_dir, "metrics")
+    if not os.path.exists(log_dir):
+        os.makedirs(log_dir)
+    writer = SummaryWriter(log_dir=log_dir)
+    tensorboard_writer = train_lib.get_tensorboard_callback(config.exp_dir)
 
-    mets = eval_lib.end_of_training_evaluation(
-        model,
-        datasets['validation'],
-        datasets['test'],
-        label_key=config.label_key,
-        exp_dir=config.exp_dir,
-        epoch=config.num_epochs)
-    return mets, history
+    bar_test = tqdm(datasets['test'], total=len(datasets['test']), desc='Test')
+    for inputs, labels in bar_test:
+        inputs, labels = inputs.to(device), labels.to(device)
+        outputs = model(inputs)
+        for i in range(labels.shape[0]):
+            metric.update_val(outputs[i], labels[i])
+        bar_test.set_postfix(IoU=metric.value)
+
+    callbacks['tensorboard'].add_scalar('Test/IoU', metric.value, 0)
+    bar_test.close()

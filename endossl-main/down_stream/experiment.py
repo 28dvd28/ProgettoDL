@@ -101,7 +101,7 @@ def run_experiment(config, verbose=True):
             optimizer.step()
             running_loss += loss_value.item()
 
-            bar.set_postfix(loss=loss_value.item() / (bar.n + 1))
+            bar.set_postfix(loss=loss_value.item())
         bar.close()
 
         epoch_train_loss = running_loss / len(datasets['train'])
@@ -124,7 +124,7 @@ def run_experiment(config, verbose=True):
                     running_loss += loss_value.item()
                     for metric in new_model_metrics:
                         metric.update_val(outputs, labels)
-                    bar_eval.set_postfix(loss=loss_value.item() / (bar_eval.n + 1))
+                    bar_eval.set_postfix(loss=loss_value.item())
 
             bar_eval.close()
             epoch_val_loss = running_loss / len(datasets['validation'])

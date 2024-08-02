@@ -12,11 +12,11 @@ class Config:
         for k, v in kwargs.items():
             setattr(self, k, v)
 
-    exp_dir = os.path.join(par_dir, 'exps', 'classifierCholec80_pretrained', 'tmp')
+    exp_dir = os.path.join(par_dir, 'exps', 'polypTest', 'tmp')
 
     # dataset
-    dataset_name = 'cholec80'
-    data_root = os.path.join(par_dir, 'cholec80')
+    dataset_name = 'PolypsSet'
+    data_root = os.path.join(par_dir, 'PolypsSet')
     train_transformation = 'randaug'
     label_key = 'segment'
 

@@ -160,6 +160,38 @@ class MyAUC(MyMetrics):
         self.auc = self.auc.to(device)
 
 
+class MyIntersectionOverUnion(MyMetrics):
+
+    def __init__(self, name):
+        super(MyIntersectionOverUnion, self).__init__(name)
+
+    def update_val(self, predictions, ground_truths):
+
+        self.counter += 1
+        if predictions[0] < ground_truths[0] and predictions[0] + predictions[2] < ground_truths[0]:
+            self.value += 0
+        elif predictions[1] < ground_truths[1] and predictions[1] + predictions[3] < ground_truths[1]:
+            self.value += 0
+        elif ground_truths[0] < predictions[0] and ground_truths[0] + ground_truths[2] < predictions[0]:
+            self.value += 0
+        elif ground_truths[1] < predictions[1] and ground_truths[1] + ground_truths[3] < predictions[1]:
+            self.value += 0
+        else:
+            pred_area = predictions[2] * predictions[3]
+            gt_area = ground_truths[2] * ground_truths[3]
+            union_area = pred_area + gt_area
+
+            xA = max(predictions[0], ground_truths[0])
+            yA = max(predictions[1], ground_truths[1])
+            xB = min(predictions[0] + predictions[2], ground_truths[0] + ground_truths[2])
+            yB = min(predictions[1] + predictions[3], ground_truths[1] + ground_truths[3])
+            intersection_area = abs(xA - xB) * abs(yA - yB)
+
+            self.value += intersection_area / union_area
+            self.value = self.value / self.counter
+
+
+
 def get_metrics(task_type: str, num_classes: int):
     if task_type == 'multi_class':
         return [MyF1Score(num_classes=num_classes,
