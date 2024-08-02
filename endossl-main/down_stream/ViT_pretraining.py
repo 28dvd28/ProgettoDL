@@ -33,7 +33,7 @@ class Config:
     weight_decay = 1e-5
 
     # training
-    num_epochs = 5
+    num_epochs = 10
     batch_size = 150
     validation_freq = 1
 
@@ -61,7 +61,7 @@ def training_loop():
         double_img=True
     )
 
-    model = MyViTMSNModel()
+    model = MyViTMSNModel(device=device)
     model.to(device)
 
     patch_size = model.vitMsn.config.patch_size
@@ -182,10 +182,3 @@ def test_loop(model_path: str):
 
 if __name__ == '__main__':
     training_loop()
-
-
-
-
-
-
-

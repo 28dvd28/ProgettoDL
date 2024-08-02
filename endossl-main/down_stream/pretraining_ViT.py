@@ -61,7 +61,7 @@ def training_loop(config):
     callbacks = train_lib.get_callbacks(
         config.callbacks_names,
         optimizer,
-        os.path.join('..','exps', 'PretrainedModels', 'tmp'),
+        os.path.join('..','exps', 'pretraining', 'tmp'),
         config.monitor_metric,
         0.01)
 
@@ -123,7 +123,7 @@ def training_loop(config):
             print('-->Saving model')
             best_val_loss = epoch_val_loss
             counter += 1
-            torch.save(model.state_dict(), os.path.join('..', 'exps', 'PretrainedModels', 'tmp', 'checkpoints', f'best_model{counter}.pth'))
+            torch.save(model.state_dict(), os.path.join('..', 'exps', 'pretraining', 'tmp', 'checkpoints', f'best_model{counter}.pth'))
 
         if 'reduce_lr_plateau' in config.callbacks_names:
             print('-->Check reduction on plateau')
@@ -160,7 +160,7 @@ def test(config):
 
     image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small") # Preprocessing the image
     model = MyViTMSNModel() # Load the model
-    model.load_state_dict(torch.load(os.path.join('../exps/PretrainedModels', 'best_model1.pth')))
+    model.load_state_dict(torch.load(os.path.join('../exps/pretraining', 'best_model1.pth')))
 
     for param in model.parameters():
         param.requires_grad = False
