@@ -61,6 +61,8 @@ def train_loop():
             model_path = Config.pretrained_path
             model.load_state_dict(torch.load(model_path))
         model.classifier = nn.Linear(model.classifier.in_features, Config.num_classes)
+        for param in model.vitMsn.parameters():
+            param.requires_grad = False
         model.ending_relu = True
     else:
         raise ValueError('Invalid model name: {}'.format(Config.model))
