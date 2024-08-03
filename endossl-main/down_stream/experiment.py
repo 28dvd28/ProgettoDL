@@ -43,7 +43,6 @@ def run_experiment(config, verbose=True):
     datasets = cholec80_images.get_pytorch_dataloaders(
         data_root=config.data_root,
         batch_size=config.batch_size,
-        train_transformation=config.train_transformation,
     )
 
     if config.is_linear_evaluation:
@@ -58,9 +57,6 @@ def run_experiment(config, verbose=True):
     elif 'vit' in config.model:
         model = MyViTMSNModel()
         model.classifier = nn.Linear(model.classifier.in_features, config.num_classes)
-        config.saved_model_dir = os.path.join('endossl-main/exps/classifierCholec80/tmp/checkpoints', f'epoch_01.pth')
-        model.load_state_dict(torch.load(config.saved_model_dir))
-
         for param in model.vitMsn.parameters():
             param.requires_grad = False
     else:
@@ -91,7 +87,6 @@ def run_experiment(config, verbose=True):
         running_loss = 0.0
         bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch: {epoch}', ncols=100)
         for inputs, labels in bar:
-            break
             inputs, labels = inputs.to(device), labels.to(device)
 
             optimizer.zero_grad()

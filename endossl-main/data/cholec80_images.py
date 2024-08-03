@@ -1,9 +1,12 @@
 """Module for creating TF datasets for Cholec80 dataset"""
 
 import os
+from cProfile import label
+from traceback import print_exc
 
 import torch
 import torchvision
+from PIL.ImageSequence import all_frames
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
@@ -83,6 +86,8 @@ class CustomCholec80Dataset(Dataset):
         self.double_img = double_img
 
         self.all_frame_names, self.all_labels = self.prebuild(video_ids)
+        print(len(self.all_frame_names))
+        print(len(self.all_labels))
 
     def __len__(self):
         return len(self.all_labels)
@@ -104,11 +109,10 @@ class CustomCholec80Dataset(Dataset):
         for video_id in video_ids:
             video_frames_dir = os.path.join(frames_dir, video_id)
             frames = [os.path.join(video_frames_dir, f) for f in os.listdir(video_frames_dir)]
-            frames = [frames[i] for i in range(len(frames)) if i % _SUBSAMPLE_RATE == 0]
             with open(os.path.join(annos_dir, video_id + '-phase.txt'), 'r') as f:
                 labels = f.readlines()[1:]
             labels = [l.split('\t')[1][:-1] for l in labels]
-            labels = [_LABEL_NUM_MAPPING[l] for l in labels[::]][:len(frames)]
+            labels = [_LABEL_NUM_MAPPING[l] for l in labels[::_SUBSAMPLE_RATE]][:len(frames)]
             all_frame_names += frames
             all_labels += labels
         return all_frame_names, all_labels
@@ -175,11 +179,9 @@ if __name__ == '__main__':
     par_dir = os.path.realpath(__file__ + '/../../')
     data_root = os.path.join(par_dir, 'cholec80')
     dataloaders = get_pytorch_dataloaders(data_root, 8)
-    validation_dataloader = dataloaders['validation']
+    validation_dataloader = dataloaders['train']
 
-    print('Number of batches in the validation dataloader: ', len(dataloaders['validation']))
+    print('Number of batches in the validation dataloader: ', len(dataloaders['train']))
 
     for (data_batch, labels_batch) in validation_dataloader:
-        print(data_batch.shape)
-        print(labels_batch.shape)
-        break
+        print(labels_batch)

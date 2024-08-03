@@ -31,7 +31,7 @@ print("Downloading archive to {}".format(outfile))
 with requests.get(URL, stream=True) as r:
   r.raise_for_status()
   total_length = int(float(r.headers.get("content-length")) / 10 ** 6)
-  progress_bar = tqdm(unit="MB", total=total_length)
+  progress_bar = tqdm(unit="MB", total=total_length, ncols=150)
   with open(outfile, "wb") as f:
     for chunk in r.iter_content(chunk_size=CHUNK_SIZE):
       progress_bar.update(len(chunk) / 10 ** 6)

@@ -15,8 +15,8 @@ class Config:
     exp_dir = os.path.join(par_dir, 'exps', 'polypTest', 'tmp')
 
     # dataset
-    dataset_name = 'PolypsSet'
-    data_root = os.path.join(par_dir, 'PolypsSet')
+    dataset_name = 'cholec80'
+    data_root = os.path.join(par_dir, 'cholec80')
     train_transformation = 'randaug'
     label_key = 'segment'
 

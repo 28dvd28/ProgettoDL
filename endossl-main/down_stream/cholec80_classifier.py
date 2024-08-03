@@ -4,6 +4,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from scipy.ndimage import label
 from torchmetrics.classification import MulticlassF1Score
 from torch.nn.functional import softmax
 from torch.utils.tensorboard import SummaryWriter
@@ -13,7 +14,7 @@ from tqdm import tqdm
 sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 from data import cholec80_images
-from models import MyViTMSNModel
+from models.MyViTMSN import MyViTMSNModel
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -43,16 +44,14 @@ class Config:
     weight_decay = 1e-5
 
     # training
-    num_epochs = 30
+    num_epochs = 5
     num_classes = 7
-    batch_size = 150
+    batch_size = 256
     validation_freq = 1
 
 def train_loop():
 
     if Config.model == 'resnet50':
-        # TODO (1): controllare se c'è bisogno di cambiare o aggiungere il Global Average Pooling 2D
-        # TODO (2): se il training viene fatto sull'intero modello resnet50 o solo sull'ultimo layer
         model = models.resnet50()
         for param in model.parameters():
             param.requires_grad = False
@@ -76,7 +75,7 @@ def train_loop():
     model.to(device)
     optimizer = optim.AdamW(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
     criterion = nn.CrossEntropyLoss()
-    metric_f1 = MulticlassF1Score(num_classes=Config.num_classes, average='macro')
+    metric_f1 = MulticlassF1Score(num_classes=Config.num_classes, average='macro').to(device)
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
 
     for epoch in range(Config.num_epochs):
@@ -87,9 +86,11 @@ def train_loop():
         model.train()
         i = 0
 
-        for inputs, labels in bar:
+        for (inputs, labels) in bar:
+            if i == 100:
+                break
             optimizer.zero_grad()
-            inputs = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device), labels.to(device)
 
             output = softmax(model(inputs), dim=1)
 
@@ -114,8 +115,10 @@ def train_loop():
 
         with torch.no_grad():
             for inputs, labels in bar:
+                if i == 100:
+                    break
                 optimizer.zero_grad()
-                inputs = inputs.to(device), labels.to(device)
+                inputs, labels = inputs.to(device), labels.to(device)
 
                 output = softmax(model(inputs), dim=1)
 
@@ -151,13 +154,13 @@ def test_loop(model_path : str):
         batch_size=Config.batch_size
     )
 
-    model = MyViTMSNModel()
+    model = MyViTMSNModel(device=device)
     model.classifier = nn.Linear(model.classifier.in_features, Config.num_classes)
     model.load_state_dict(torch.load(model_path))
     model.to(device)
     model.eval()
 
-    metric_f1 = MulticlassF1Score(num_classes=Config.num_classes, average='macro')
+    metric_f1 = MulticlassF1Score(num_classes=Config.num_classes, average='macro').to(device)
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
 
     running_test_mascrof1 = 0.0

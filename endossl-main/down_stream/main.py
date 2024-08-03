@@ -2,7 +2,7 @@
 
 import argparse
 import config
-import experiment_polyps
+import experiment
 
 parser = argparse.ArgumentParser()
 
@@ -33,7 +33,7 @@ def main(args):
     for k, v in vars(args).items():
         if v:
             setattr(conf, k, v)
-    _ = experiment_polyps.run_experiment(conf)
+    _ = experiment.run_experiment(conf)
 
 
 if __name__ == '__main__':

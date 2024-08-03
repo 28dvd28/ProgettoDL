@@ -15,7 +15,7 @@ class MyViTMSNModel(nn.Module):
         """
     def __init__(self, pretrained_model_name_or_path : str = 'facebook/vit-msn-small', device : str = 'cpu'):
         super(MyViTMSNModel, self).__init__()
-        self.image_processor = AutoImageProcessor.from_pretrained('facebook/vit-msn-small')
+        self.image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
         self.vitMsn = ViTMSNModel.from_pretrained(pretrained_model_name_or_path)
         self.classifier = nn.Linear(self.vitMsn.config.hidden_size, 1024)
         self.device = device
