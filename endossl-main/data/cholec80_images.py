@@ -30,7 +30,7 @@ curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
 
 resize = transforms.Resize((224, 224))
-_RAND_AUGMENT = transforms.RandAugment(num_ops=3, magnitude=7)
+_RAND_AUGMENT = transforms.RandAugment(num_ops=1, magnitude=5)
 
 
 def randaug(image: torch.Tensor)->torch.Tensor:

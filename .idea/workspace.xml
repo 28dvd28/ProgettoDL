@@ -5,8 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.04 2/08/2024">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -216,6 +216,7 @@
       <workItem from="1722594048977" duration="13306000" />
       <workItem from="1722642099136" duration="3361000" />
       <workItem from="1722646140851" duration="311000" />
+      <workItem from="1722647127285" duration="6000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />

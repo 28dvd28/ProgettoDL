@@ -30,8 +30,8 @@ class Config:
 
     # optimization
     optimize_name = 'adamw'
-    learning_rate = 1e-4
-    weight_decay = 1e-5
+    learning_rate = 3e-1
+    weight_decay = 0.01
 
     # training
     num_epochs = 10
@@ -82,6 +82,9 @@ def training_loop():
 
         for inputs_target, inputs_anchor, _ in bar:
 
+            if i == 10:
+                break
+
             optimizer.zero_grad()
             inputs_anchor, inputs_target = inputs_anchor.to(device), inputs_target.to(device)
             mask = mask_generator(inputs_target.shape[0], patch_numbers)
@@ -110,6 +113,10 @@ def training_loop():
 
         with torch.no_grad():
             for inputs_target, inputs_anchor, _ in bar:
+
+                if i == 10:
+                    break
+
                 inputs_anchor, inputs_target = inputs_anchor.to(device), inputs_target.to(device)
                 mask = mask_generator(inputs_target.shape[0], patch_numbers)
 
