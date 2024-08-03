@@ -87,8 +87,6 @@ def train_loop():
         i = 0
 
         for (inputs, labels) in bar:
-            if i == 100:
-                break
             optimizer.zero_grad()
             inputs, labels = inputs.to(device), labels.to(device)
 
@@ -115,8 +113,6 @@ def train_loop():
 
         with torch.no_grad():
             for inputs, labels in bar:
-                if i == 100:
-                    break
                 optimizer.zero_grad()
                 inputs, labels = inputs.to(device), labels.to(device)
 

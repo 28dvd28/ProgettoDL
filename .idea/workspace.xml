@@ -6,15 +6,7 @@
   <component name="ChangeListManager">
     <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.04 2/08/2024">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/File convertiti.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/config.json" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/config.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/prepare.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/prepare.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/config.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/experiment.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/experiment.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -89,8 +81,8 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14036459" />
-      <window_info id="Commit" order="1" weight="0.19453125" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.14453125" />
+      <window_info id="Commit" order="1" weight="0.10130209" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
@@ -100,14 +92,14 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
+      <window_info anchor="bottom" id="Terminal" order="3" weight="0.314438" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.51405036" />
       <window_info anchor="bottom" id="Run" order="7" weight="0.51405036" />
       <window_info anchor="bottom" id="Find" order="8" weight="0.32994187" />
-      <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
       <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
+      <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
       <window_info anchor="right" id="documentation.v2" side_tool="true" />
       <window_info anchor="right" id="Coverage" show_stripe_button="false" side_tool="true" />
       <window_info anchor="right" id="SciView" show_stripe_button="false" />
@@ -223,6 +215,7 @@
       <workItem from="1722552034673" duration="5808000" />
       <workItem from="1722594048977" duration="13306000" />
       <workItem from="1722642099136" duration="3361000" />
+      <workItem from="1722646140851" duration="311000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
