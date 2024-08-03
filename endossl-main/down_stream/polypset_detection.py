@@ -13,7 +13,7 @@ from tqdm import tqdm
 sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 from data import polypset_dataloader
-from models import MyViTMSNModel
+from models.MyViTMSN import MyViTMSNModel
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -44,7 +44,7 @@ class Config:
 
     # training
     num_epochs = 30
-    num_classes = 7
+    num_classes = 4
     batch_size = 150
     validation_freq = 1
 
@@ -87,7 +87,7 @@ def train_loop():
 
         for inputs, labels in bar:
             optimizer.zero_grad()
-            inputs = inputs.to(device), labels.to(device)
+            inputs, labels = inputs.to(device), labels.to(device)
 
             output = model(inputs)
 
@@ -113,7 +113,7 @@ def train_loop():
         with torch.no_grad():
             for inputs, labels in bar:
                 optimizer.zero_grad()
-                inputs = inputs.to(device), labels.to(device)
+                inputs, labels = inputs.to(device), labels.to(device)
 
                 output = model(inputs)
 
