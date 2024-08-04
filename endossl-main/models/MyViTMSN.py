@@ -1,6 +1,6 @@
 import torch
 import torch.nn as nn
-import numpy as np
+from torchvision.models import vit_b_16, ViT_B_16_Weights
 from transformers import ViTMSNModel, AutoImageProcessor
 
 class MyViTMSNModel(nn.Module):
@@ -17,21 +17,18 @@ class MyViTMSNModel(nn.Module):
         super(MyViTMSNModel, self).__init__()
         self.image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
         self.vitMsn = ViTMSNModel.from_pretrained(pretrained_model_name_or_path)
-        self.classifier = nn.Linear(self.vitMsn.config.hidden_size, 1024)
+        self.classifier = nn.Linear(self.vitMsn.config.hidden_size, 1024, bias=False)
         self.device = device
-        self.ending_relu = False
 
         if self.vitMsn.embeddings.mask_token is None:
             self.vitMsn.embeddings.mask_token = nn.Parameter(torch.zeros(1, 1, self.vitMsn.config.hidden_size))
 
     def forward(self, inputs, bool_masked_pos = None):
-        inputs = torch.tensor(np.array(self.image_processor(inputs, do_rescale=False)['pixel_values'])).to(self.device)
+        if self.train:
+            inputs = torch.Tensor(self.image_processor(inputs, do_rescale=False, return_tensors="np")['pixel_values']).to(self.device)
         if bool_masked_pos is not None:
             output = self.vitMsn(inputs, bool_masked_pos=bool_masked_pos)[0]
         else:
             output = self.vitMsn(inputs)[0]
-        output = nn.functional.relu(output)
         output = self.classifier(output[:, 0, :])
-        if self.ending_relu:
-            output = nn.functional.relu(output)
         return output

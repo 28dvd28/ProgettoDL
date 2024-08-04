@@ -86,9 +86,6 @@ class CustomCholec80Dataset(Dataset):
         self.double_img = double_img
 
         self.all_frame_names, self.all_labels = self.prebuild(video_ids)
-        print(len(self.all_frame_names))
-        print(len(self.all_labels))
-
     def __len__(self):
         return len(self.all_labels)
 
@@ -111,10 +108,19 @@ class CustomCholec80Dataset(Dataset):
             frames = [os.path.join(video_frames_dir, f) for f in os.listdir(video_frames_dir)]
             with open(os.path.join(annos_dir, video_id + '-phase.txt'), 'r') as f:
                 labels = f.readlines()[1:]
-            labels = [l.split('\t')[1][:-1] for l in labels]
-            labels = [_LABEL_NUM_MAPPING[l] for l in labels[::_SUBSAMPLE_RATE]][:len(frames)]
+
+            labels = labels[::_SUBSAMPLE_RATE]
+            ordered_labels = []
+            # for loop necessary for ordering the labels to the corresponding frame
+            for frame in frames:
+                frame_index = int(frame[-10:-4])
+                ordered_labels.append(labels[frame_index - 1])
+
+            ordered_labels = [l.split('\t')[1][:-1] for l in ordered_labels]
+            ordered_labels = [_LABEL_NUM_MAPPING[l] for l in ordered_labels]
+
             all_frame_names += frames
-            all_labels += labels
+            all_labels += ordered_labels
         return all_frame_names, all_labels
 
     def parse_image(self, image_path : str)->torch.Tensor:
@@ -157,7 +163,7 @@ def get_pytorch_dataloaders(data_root, batch_size, double_img=False)->dict:
     for split, ids_range in _CHOLEC80_SPLIT.items():
 
         if split == 'train':
-            train_transformation = 'randaug'
+            train_transformation = 'resize'
         else:
             train_transformation = 'resize'
 

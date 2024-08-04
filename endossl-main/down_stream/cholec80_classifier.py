@@ -6,7 +6,7 @@ import torch.nn as nn
 import torch.optim as optim
 from scipy.ndimage import label
 from torchmetrics.classification import MulticlassF1Score
-from torch.nn.functional import softmax
+from torch.nn.functional import softmax, one_hot
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import models
 from tqdm import tqdm
@@ -39,14 +39,14 @@ class Config:
     monitor_metric = 'val_macro_f1'
 
     # optimization
-    optimize_name = 'adamw'
-    learning_rate = 1e-4
+    optimize_name = 'adam'
+    learning_rate =  5e-3
     weight_decay = 1e-5
 
     # training
-    num_epochs = 5
+    num_epochs = 20
     num_classes = 7
-    batch_size = 256
+    batch_size = 150
     validation_freq = 1
 
 def train_loop():
@@ -73,7 +73,7 @@ def train_loop():
     )
 
     model.to(device)
-    optimizer = optim.AdamW(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
+    optimizer = optim.Adam(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
     criterion = nn.CrossEntropyLoss()
     metric_f1 = MulticlassF1Score(num_classes=Config.num_classes, average='macro').to(device)
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
@@ -82,24 +82,24 @@ def train_loop():
 
         '''Train loop'''
         running_train_loss = 0.0
-        bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch {epoch + 1}', ncols=100)
+        bar = tqdm(total=len(datasets['train']), desc=f'Train of epoch {epoch + 1}', ncols=100)
         model.train()
-        i = 0
 
-        for (inputs, labels) in bar:
+        for i, (inputs, labels) in enumerate(datasets['train'], 0):
+            inputs, labels = inputs.to(device).to(torch.float), labels.to(device)
+
             optimizer.zero_grad()
-            inputs, labels = inputs.to(device), labels.to(device)
-
-            output = softmax(model(inputs), dim=1)
+            output = model(inputs)
+            output = softmax(output, dim=1)
 
             loss_value = criterion(output, labels)
             loss_value.backward()
             optimizer.step()
             running_train_loss += loss_value.item()
 
-            writer.add_scalar(f'TrainLoop/epoch_{epoch}_loss', loss_value, i)
+            writer.add_scalar(f'TrainLoop/epoch_{epoch}_loss', loss_value.item(), i)
             bar.set_postfix(loss=loss_value.item())
-            i += 1
+            bar.update(1)
 
         bar.close()
         epoch_train_loss = running_train_loss / len(datasets['train'])
@@ -107,12 +107,11 @@ def train_loop():
 
         '''Validation loop'''
         running_macroF1_score = 0.0
-        bar = tqdm(datasets['validation'], total=len(datasets['validation']), desc=f'Validation of epoch {epoch + 1}', ncols=100)
+        bar = tqdm(total=len(datasets['validation']), desc=f'Validation of epoch {epoch + 1}', ncols=100)
         model.eval()
-        i = 0
 
         with torch.no_grad():
-            for inputs, labels in bar:
+            for i, (inputs, labels) in enumerate(datasets['validation'], 0):
                 optimizer.zero_grad()
                 inputs, labels = inputs.to(device), labels.to(device)
 
@@ -121,9 +120,9 @@ def train_loop():
                 metric_value = metric_f1(output, labels)
                 running_macroF1_score += metric_value.item()
 
-                writer.add_scalar(f'ValidationLoop/epoch_{epoch}_macrof1score', metric_value, i)
+                writer.add_scalar(f'ValidationLoop/epoch_{epoch}_macrof1score', metric_value.item(), i)
                 bar.set_postfix(loss=metric_value.item())
-                i += 1
+                bar.update(1)
 
             bar.close()
 
@@ -160,20 +159,20 @@ def test_loop(model_path : str):
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
 
     running_test_mascrof1 = 0.0
-    bar = tqdm(datasets['test'], total=len(datasets['test']), desc=f'Test', ncols=100)
-    i = 0
+    bar = tqdm(total=len(datasets['test']), desc=f'Test', ncols=100)
 
-    for inputs, labels in bar:
+    with torch.no_grad():
+        for i, (inputs, labels) in enumerate(datasets['test'], 0):
 
-        inputs, labels = inputs.to(device), labels.to(device)
-        outputs = softmax(model(inputs), dim=1)
+            inputs, labels = inputs.to(device), labels.to(device)
+            outputs = softmax(model(inputs), dim=1)
 
-        f1score = metric_f1(outputs, labels)
-        running_test_mascrof1 += f1score.item()
+            f1score = metric_f1(outputs, labels)
+            running_test_mascrof1 += f1score.item()
 
-        writer.add_scalar(f'TestLoop/MacroF1score', f1score, i)
-        bar.set_postfix(loss=f1score.item())
-        i += 1
+            writer.add_scalar(f'TestLoop/MacroF1score', f1score, i)
+            bar.set_postfix(loss=f1score.item())
+            bar.update(1)
 
     bar.close()
     writer.add_scalar(f'TestLoop/FinaMacroF1', running_test_mascrof1 / len(datasets["test"]), 1)
@@ -184,4 +183,5 @@ def test_loop(model_path : str):
 
 
 if __name__ == '__main__':
+    # test_loop('exps/cholec80_classifier/checkpoints/model_19.pth')
     train_loop()

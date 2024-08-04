@@ -11,7 +11,7 @@ from tqdm import tqdm
 sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 from data import cholec80_images
-from models.MyViTMSN import MyViTMSNModel
+from models.MyViTMSN_pretraining import MyViTMSNModel_pretraining
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -32,74 +32,51 @@ class Config:
     optimize_name = 'adamw'
     learning_rate = 3e-1
     weight_decay = 0.01
+    lambda_val = 1
 
     # training
     num_epochs = 10
-    batch_size = 150
+    batch_size = 100
     validation_freq = 1
 
-
-def mask_generator(batch_size : int, patch_numbers : int)->list:
-    """ Generate a mask for the input tensor, such that half of the patches will be masked.
-
-    Args:
-        batch_size (int): The size of the batch
-        patch_numbers (int): The number of patches in the input tensor
-    """
-
-    mask = torch.zeros(batch_size, patch_numbers)
-    for i in range(batch_size):
-        idx = torch.randperm(patch_numbers)[:patch_numbers // 2]
-        mask[i, idx] = 1
-    mask = mask == 1
-    return mask
 
 def training_loop():
 
     datasets = cholec80_images.get_pytorch_dataloaders(
         data_root=Config.data_root,
-        batch_size=Config.batch_size,
-        double_img=True
+        batch_size=Config.batch_size
     )
 
-    model = MyViTMSNModel(device=device)
+    model = MyViTMSNModel_pretraining(device=device)
     model.to(device)
 
-    patch_size = model.vitMsn.config.patch_size
-    patch_numbers = (224 * 224) // (patch_size * patch_size)
-
-    optimizer = optim.AdamW(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
-    criterion = nn.CrossEntropyLoss()
+    optimizer = optim.Adam(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
+    cross_entropy_criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
 
     for epoch in range(Config.num_epochs):
 
         '''Train loop'''
         running_train_loss = 0.0
-        bar = tqdm(datasets['train'], total=len(datasets['train']), desc=f'Train of epoch {epoch+1}', ncols=100)
+        bar = tqdm(total=len(datasets['train']), desc=f'Train of epoch {epoch+1}', ncols=100)
         model.train()
-        i=0
 
-        for inputs_target, inputs_anchor, _ in bar:
+        for i, (inputs, _) in enumerate(datasets['train'], 0):
 
-            if i == 10:
-                break
-
+            inputs = inputs.to(device)
             optimizer.zero_grad()
-            inputs_anchor, inputs_target = inputs_anchor.to(device), inputs_target.to(device)
-            mask = mask_generator(inputs_target.shape[0], patch_numbers)
 
-            output_target = softmax(model(inputs_target), dim=1)
-            output_anchor = softmax(model(inputs_anchor, bool_masked_pos=mask), dim=1)
+            output_anchor, output_target = model(inputs, inputs)
+            output_anchor, output_target = softmax(output_anchor, dim=1), softmax(output_target, dim=1)
 
-            loss_value = criterion(output_anchor, output_target)
+            loss_value = cross_entropy_criterion(output_anchor, output_target) - Config.lambda_val * output_anchor.mean()
+            running_train_loss += loss_value.detach()
             loss_value.backward()
             optimizer.step()
-            running_train_loss += loss_value.item()
 
-            writer.add_scalar(f'TrainLoop/epoch_{epoch}_loss', loss_value,i)
+            writer.add_scalar(f'TrainLoop/epoch_{epoch}_loss', loss_value.detach(),i)
             bar.set_postfix(loss=loss_value.item())
-            i += 1
+            bar.update(1)
 
         bar.close()
         epoch_train_loss = running_train_loss / len(datasets['train'])
@@ -107,28 +84,22 @@ def training_loop():
 
         ''' Validation loop'''
         running_validation_loss = 0.0
-        bar = tqdm(datasets['validation'], total=len(datasets['validation']), desc=f'Train of epoch {epoch + 1}', ncols=100)
+        bar = tqdm(total=len(datasets['validation']), desc=f'Train of epoch {epoch + 1}', ncols=100)
         model.eval()
-        i = 0
 
         with torch.no_grad():
-            for inputs_target, inputs_anchor, _ in bar:
+            for i, (inputs, _) in enumerate(datasets['validation'], 0):
+                inputs = inputs.to(device)
 
-                if i == 10:
-                    break
+                output_anchor, output_target = model(inputs, inputs)
+                output_anchor, output_target = softmax(output_anchor, dim=1), softmax(output_target, dim=1)
 
-                inputs_anchor, inputs_target = inputs_anchor.to(device), inputs_target.to(device)
-                mask = mask_generator(inputs_target.shape[0], patch_numbers)
-
-                output_target = softmax(model(inputs_target), dim=1)
-                output_anchor = softmax(model(inputs_anchor, bool_masked_pos=mask), dim=1)
-
-                loss_value = criterion(output_anchor, output_target)
+                loss_value = cross_entropy_criterion(output_anchor, output_target)
                 running_validation_loss += loss_value.item()
 
-                writer.add_scalar(f'TestLoop/epoch_{epoch}_loss', loss_value, i)
+                writer.add_scalar(f'TestLoop/epoch_{epoch}_loss', loss_value.item(), i)
                 bar.set_postfix(loss=loss_value.item())
-                i += 1
+                bar.update(1)
 
             bar.close()
             epoch_test_loss = running_validation_loss / len(datasets['validation'])
@@ -154,35 +125,29 @@ def test_loop(model_path: str):
         double_img=True
     )
 
-    model = MyViTMSNModel()
+    model = MyViTMSNModel_pretraining()
     model.load_state_dict(torch.load(model_path))
     model.to(device)
     model.eval()
 
-    patch_size = model.vitMsn.config.patch_size
-    patch_numbers = (224 * 224) // (patch_size * patch_size)
-
-    criterion = nn.CrossEntropyLoss()
+    cross_entropy_criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
 
     running_test_loss = 0.0
-    bar = tqdm(datasets['test'], total=len(datasets['test']), desc=f'Test', ncols=100)
-    i = 0
+    bar = tqdm(total=len(datasets['test']), desc=f'Test', ncols=100)
 
-    for inputs_target, inputs_anchor, _ in bar:
-        inputs_anchor, inputs_target = inputs_anchor.to(device), inputs_target.to(device)
-        mask = mask_generator(inputs_target.shape[0], patch_numbers)
+    for i, (inputs, _) in enumerate(datasets['test'], 0):
+        inputs = inputs.to(device)
 
-        output_target = softmax(model(inputs_target), dim=1)
-        output_anchor = softmax(model(inputs_anchor, bool_masked_pos=mask), dim=1)
+        output_anchor, output_target = model(inputs, inputs)
+        output_anchor, output_target = softmax(output_anchor, dim=1), softmax(output_target, dim=1)
 
-        loss_value = criterion(output_anchor, output_target)
-        loss_value.backward()
+        loss_value = cross_entropy_criterion(output_anchor, output_target) - Config.lambda_val * output_anchor.mean()
         running_test_loss += loss_value.item()
 
         writer.add_scalar(f'TestLoop/loss', loss_value, i)
         bar.set_postfix(loss=loss_value.item())
-        i += 1
+        bar.update(1)
 
     bar.close()
     writer.add_scalar(f'TestLoop/FinalLoss', running_test_loss / len(datasets["test"]), 1)
