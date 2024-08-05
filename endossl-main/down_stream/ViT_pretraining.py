@@ -4,13 +4,9 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from tensorboard.plugins.pr_curve.metadata import TRUE_NEGATIVES_INDEX
 from torch.utils.tensorboard import SummaryWriter
 from torch.nn.functional import softmax
 from tqdm import tqdm
-
-import numpy as np
-from triton.language import dtype
 
 sys.path.append(os.path.realpath(__file__ + '/../../'))
 
@@ -44,21 +40,6 @@ class Config:
     validation_freq = 1
 
 
-def cross_entropy(anchor : torch.Tensor, target: torch.Tensor) -> torch.Tensor:
-
-    anchor = anchor.cpu().detach().numpy()
-    target = target.cpu().detach().numpy()
-
-    result = 0
-    for i in range(anchor.shape[0]):
-        result += -target[i].dot(np.log(anchor[i].T))
-
-    result = result / anchor.shape[0]
-    return torch.tensor(result, dtype=torch.float, requires_grad=True, device=device)
-
-
-
-
 def training_loop():
 
     datasets = cholec80_images.get_pytorch_dataloaders(
@@ -67,7 +48,7 @@ def training_loop():
         double_img=True
     )
 
-    model = MyViTMSNModel_pretraining(device=device)
+    model = MyViTMSNModel_pretraining(ipe=len(datasets['train']), num_epochs=Config.num_epochs, device=device)
     model.to(device)
 
     optimizer = optim.Adam(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
@@ -94,6 +75,7 @@ def training_loop():
             running_train_loss += loss_value.detach()
             loss_value.backward()
             optimizer.step()
+            model.exponential_moving_average()
 
             writer.add_scalar(f'TrainLoop/epoch_{epoch}_loss', loss_value.item(),i)
             bar.set_postfix(loss=f'{loss_value.item()}')
@@ -102,79 +84,13 @@ def training_loop():
         bar.close()
         epoch_train_loss = running_train_loss / len(datasets['train'])
 
-
-        ''' Validation loop'''
-        # running_validation_loss = 0.0
-        # bar = tqdm(total=len(datasets['validation']), desc=f'Validation of epoch {epoch + 1}', ncols=100)
-        # model.eval()
-        # model.train_phase = False
-        #
-        # with torch.no_grad():
-        #     for i, (inputs, _) in enumerate(datasets['validation'], 0):
-        #
-        #         inputs = inputs.to(device)
-        #
-        #         output_anchor, output_target = model(inputs, inputs)
-        #         output_anchor, output_target = softmax(output_anchor, dim=1), softmax(output_target, dim=1)
-        #
-        #         loss_value = cross_entropy_criterion(output_anchor, output_target)
-        #         running_validation_loss += loss_value.item()
-        #
-        #         writer.add_scalar(f'TestLoop/epoch_{epoch}_loss', loss_value.item(), i)
-        #         bar.set_postfix(loss=f'loss={loss_value.item()}')
-        #         bar.update(1)
-        #
-        #     bar.close()
-        #     epoch_test_loss = running_validation_loss / len(datasets['validation'])
-
+        '''Saving model and info'''
         writer.add_scalar(f'Averaged losses for epoch/train', epoch_train_loss, epoch)
-        # writer.add_scalar(f'Averaged losses for epoch/validation', epoch_test_loss, epoch)
-
         torch.save(model.state_dict(), os.path.join(Config.exp_dir, 'checkpoints', f'model_{epoch}.pth'))
-
         filename = os.path.join(Config.exp_dir, 'checkpoints', 'models_details.txt')
         with open(filename, 'a') as file:
             concatenated_string = f'Epoch: {epoch} - Train loss: {epoch_train_loss}\n'
             file.write(concatenated_string)
-
-    writer.flush()
-    writer.close()
-
-def test_loop(model_path: str):
-
-    datasets = cholec80_images.get_pytorch_dataloaders(
-        data_root=Config.data_root,
-        batch_size=Config.batch_size,
-        double_img=True
-    )
-
-    model = MyViTMSNModel_pretraining()
-    model.load_state_dict(torch.load(model_path))
-    model.to(device)
-    model.eval()
-
-    cross_entropy_criterion = nn.CrossEntropyLoss()
-    writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
-
-    running_test_loss = 0.0
-    bar = tqdm(total=len(datasets['test']), desc=f'Test', ncols=100)
-
-    for i, (inputs, _) in enumerate(datasets['test'], 0):
-        inputs = inputs.to(device)
-
-        output_anchor, output_target = model(inputs, inputs)
-        output_anchor, output_target = softmax(output_anchor, dim=1), softmax(output_target, dim=1)
-
-        loss_value = cross_entropy_criterion(output_anchor, output_target) - Config.lambda_val * output_anchor.mean()
-        running_test_loss += loss_value.item()
-
-        writer.add_scalar(f'TestLoop/loss', loss_value, i)
-        bar.set_postfix(loss=loss_value.item())
-        bar.update(1)
-
-    bar.close()
-    writer.add_scalar(f'TestLoop/FinalLoss', running_test_loss / len(datasets["test"]), 1)
-    print(f'Average loss for test: {running_test_loss / len(datasets["test"])}')
 
     writer.flush()
     writer.close()

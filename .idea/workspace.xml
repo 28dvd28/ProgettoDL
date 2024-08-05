@@ -7,9 +7,8 @@
     <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit 4/08/2024">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/exps/pretraining/tb_logs/events.out.tfevents.1722820294.sheldon.2808365.0" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/endossl-main/models/MyViTMSN_pretraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/models/MyViTMSN_pretraining.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -87,7 +86,7 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.20807292" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.10807292" />
       <window_info id="Commit" order="1" weight="0.18723959" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
@@ -97,16 +96,16 @@
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.29602712" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.51405036" />
       <window_info anchor="bottom" id="Run" order="7" weight="0.2999031" />
       <window_info anchor="bottom" id="Debug" order="8" weight="0.2999031" />
       <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32994187" />
-      <window_info anchor="bottom" id="Find" order="9" weight="0.32994187" />
-      <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Find" order="10" weight="0.32994187" />
       <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
+      <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
       <window_info anchor="right" id="documentation.v2" side_tool="true" />
       <window_info anchor="right" id="Coverage" show_stripe_button="false" side_tool="true" />
       <window_info anchor="right" id="SciView" show_stripe_button="false" />
@@ -231,6 +230,7 @@
       <workItem from="1722811815954" duration="1240000" />
       <workItem from="1722813304578" duration="1818000" />
       <workItem from="1722815651723" duration="4953000" />
+      <workItem from="1722820902663" duration="7430000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
