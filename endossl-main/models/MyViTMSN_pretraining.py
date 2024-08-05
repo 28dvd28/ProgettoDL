@@ -1,6 +1,28 @@
+from idlelib.pyshell import MyRPCClient
+
 import torch
 import torch.nn as nn
 from transformers import ViTMSNModel, AutoImageProcessor
+import matplotlib.pyplot as plt
+import numpy as np
+
+x=0
+
+def plot_img(img : torch.Tensor):
+
+    img = img.cpu().detach().permute(1, 2, 0).numpy().astype(np.uint8)
+    img = img * 255
+
+    global x
+
+    # Visualizzare l'immagine in bianco e nero con Matplotlib
+    plt.imshow(img)
+    plt.axis('off')  # Nascondere gli assi
+    plt.savefig(f'img{x}.png', bbox_inches='tight', pad_inches=0)
+    plt.show()
+    x += 1
+
+
 
 class MyViTMSNModel_pretraining(nn.Module):
     """This class implement the ViT-MSN model for the pre-training part. It will upload the model from the Hugging Face
@@ -19,6 +41,7 @@ class MyViTMSNModel_pretraining(nn.Module):
         self.vitMsn_anchor = ViTMSNModel.from_pretrained(pretrained_model_name_or_path)
         self.classifier = nn.Linear(self.vitMsn_anchor.config.hidden_size, 1024, bias=False)
         self.device = device
+        self.train_phase = True
 
         if self.vitMsn_anchor.embeddings.mask_token is None:
             self.vitMsn_anchor.embeddings.mask_token = nn.Parameter(torch.zeros(1, 1, self.vitMsn_anchor.config.hidden_size))
@@ -30,7 +53,7 @@ class MyViTMSNModel_pretraining(nn.Module):
         self.patch_numbers = (224 * 224) // (patch_size * patch_size)
 
     def forward(self, img_anchor, img_target):
-        if self.train:
+        if self.train_phase:
 
             bool_masked_pos = self.mask_generator(img_anchor.shape[0], self.patch_numbers)
 
@@ -43,6 +66,10 @@ class MyViTMSNModel_pretraining(nn.Module):
             output_target = self.vitMsn_target(img_target)[0]
             output_target = self.classifier(output_target[:, 0, :])
         else:
+
+            img_anchor = torch.Tensor(self.image_processor(img_anchor, do_rescale=False, return_tensors="np")['pixel_values']).to(self.device)
+            img_target = torch.Tensor(self.image_processor(img_target, do_rescale=False, return_tensors="np")['pixel_values']).to(self.device)
+
             output_anchor = self.vitMsn_anchor(img_anchor)[0]
             output_anchor = self.classifier(output_anchor[:, 0, :])
 

@@ -1,12 +1,10 @@
 """Module for creating TF datasets for Cholec80 dataset"""
 
 import os
-from cProfile import label
-from traceback import print_exc
 
 import torch
 import torchvision
-from PIL.ImageSequence import all_frames
+from tensorboard.compat.tensorflow_stub.dtypes import double
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
@@ -30,7 +28,13 @@ curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
 
 resize = transforms.Resize((224, 224))
-_RAND_AUGMENT = transforms.RandAugment(num_ops=1, magnitude=5)
+_RAND_AUGMENT = transforms.Compose([
+    transforms.RandomResizedCrop(size=(224, 224), scale=(0.8, 1.0)),  # Random resized crop
+    transforms.RandomHorizontalFlip(p=0.5),  # Random horizontal flip
+    transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2)  # Color jitter
+])
+
+_RAND_AUGMENT_CLASSIFIER = transforms.RandAugment(num_ops=3, magnitude=7)
 
 
 def randaug(image: torch.Tensor)->torch.Tensor:
@@ -44,9 +48,8 @@ def randaug(image: torch.Tensor)->torch.Tensor:
         torch.Tensor: Augmented image.
     """
     image = resize(image)
-    image = image * 255.0
     image = image.to(torch.uint8)
-    return _RAND_AUGMENT.forward(image) / 255.0
+    return _RAND_AUGMENT(image)
 
 
 def get_train_image_transformation(name: str):
@@ -163,9 +166,10 @@ def get_pytorch_dataloaders(data_root, batch_size, double_img=False)->dict:
     for split, ids_range in _CHOLEC80_SPLIT.items():
 
         if split == 'train':
-            train_transformation = 'resize'
+            train_transformation = 'randaug'
         else:
             train_transformation = 'resize'
+            double_img = False
 
         dataset = CustomCholec80Dataset(
             data_root,

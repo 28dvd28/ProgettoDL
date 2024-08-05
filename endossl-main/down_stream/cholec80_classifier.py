@@ -4,9 +4,8 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
-from scipy.ndimage import label
 from torchmetrics.classification import MulticlassF1Score
-from torch.nn.functional import softmax, one_hot
+from torch.nn.functional import softmax
 from torch.utils.tensorboard import SummaryWriter
 from torchvision import models
 from tqdm import tqdm
@@ -15,6 +14,8 @@ sys.path.append(os.path.realpath(__file__ + '/../../'))
 
 from data import cholec80_images
 from models.MyViTMSN import MyViTMSNModel
+from models.MyViTMSN_pretraining import MyViTMSNModel_pretraining
+
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 
@@ -22,12 +23,12 @@ device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 class Config:
 
     # experiment directory
-    exp_dir = os.path.join('exps', 'cholec80_classifier')
+    exp_dir = os.path.join('exps', 'cholec80_classifier_pretrained')
 
     # model
     model = 'vit'
-    pretrained = False
-    model_name = 'model_1.pth'
+    pretrained = True
+    model_name = 'model_0.pth'
     pretrained_path = os.path.join('exps', 'pretraining', 'checkpoints', model_name)
 
     # dataset info
@@ -58,9 +59,14 @@ def train_loop():
         model.fc = nn.Linear(model.fc.in_features, Config.num_classes)
     elif 'vit' == Config.model:
         model = MyViTMSNModel(device=device)
+        pretrained_model = MyViTMSNModel_pretraining(device=device)
+
         if Config.pretrained:
             model_path = Config.pretrained_path
-            model.load_state_dict(torch.load(model_path))
+            pretrained_model.load_state_dict(torch.load(model_path))
+
+            model.vitMsn.load_state_dict(pretrained_model.vitMsn_anchor.state_dict())
+
         model.classifier = nn.Linear(model.classifier.in_features, Config.num_classes)
         for param in model.vitMsn.parameters():
             param.requires_grad = False
@@ -98,7 +104,7 @@ def train_loop():
             running_train_loss += loss_value.item()
 
             writer.add_scalar(f'TrainLoop/epoch_{epoch}_loss', loss_value.item(), i)
-            bar.set_postfix(loss=loss_value.item())
+            bar.set_postfix(loss=f'{loss_value.item()}')
             bar.update(1)
 
         bar.close()
@@ -121,7 +127,7 @@ def train_loop():
                 running_macroF1_score += metric_value.item()
 
                 writer.add_scalar(f'ValidationLoop/epoch_{epoch}_macrof1score', metric_value.item(), i)
-                bar.set_postfix(loss=metric_value.item())
+                bar.set_postfix(f1score=f'{metric_value.item()}')
                 bar.update(1)
 
             bar.close()

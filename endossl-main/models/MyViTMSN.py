@@ -24,8 +24,7 @@ class MyViTMSNModel(nn.Module):
             self.vitMsn.embeddings.mask_token = nn.Parameter(torch.zeros(1, 1, self.vitMsn.config.hidden_size))
 
     def forward(self, inputs, bool_masked_pos = None):
-        if self.train:
-            inputs = torch.Tensor(self.image_processor(inputs, do_rescale=False, return_tensors="np")['pixel_values']).to(self.device)
+        inputs = torch.Tensor(self.image_processor(inputs, do_rescale=False, return_tensors="np")['pixel_values']).to(self.device)
         if bool_masked_pos is not None:
             output = self.vitMsn(inputs, bool_masked_pos=bool_masked_pos)[0]
         else:
