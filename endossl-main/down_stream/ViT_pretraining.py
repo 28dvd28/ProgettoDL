@@ -4,6 +4,7 @@ import os
 import torch
 import torch.nn as nn
 import torch.optim as optim
+from torch.nn.utils.parametrize import transfer_parametrizations_and_params
 from torch.utils.tensorboard import SummaryWriter
 from torch.nn.functional import softmax
 from tqdm import tqdm
@@ -35,9 +36,8 @@ class Config:
     lambda_val = 1
 
     # training
-    num_epochs = 5
+    num_epochs = 30
     batch_size = 200
-    validation_freq = 1
 
 
 def training_loop():
@@ -51,7 +51,9 @@ def training_loop():
     model = MyViTMSNModel_pretraining(ipe=len(datasets['train']), num_epochs=Config.num_epochs, device=device)
     model.to(device)
 
-    optimizer = optim.Adam(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
+    trainable_parameters = filter(lambda p: p.requires_grad, model.parameters())
+
+    optimizer = optim.AdamW(trainable_parameters, lr=Config.learning_rate, weight_decay=Config.weight_decay)
     cross_entropy_criterion = nn.CrossEntropyLoss()
     writer = SummaryWriter(log_dir=os.path.join(Config.exp_dir, 'tb_logs'))
 
@@ -69,11 +71,11 @@ def training_loop():
             optimizer.zero_grad()
 
             output_anchor, output_target = model(inputs_anchor, inputs_target)
-            output_anchor, output_target = softmax(output_anchor, dim=1), softmax(output_target, dim=1)
 
             loss_value = cross_entropy_criterion(output_anchor, output_target) - Config.lambda_val * output_anchor.mean()
             running_train_loss += loss_value.detach()
             loss_value.backward()
+
             optimizer.step()
             model.exponential_moving_average()
 

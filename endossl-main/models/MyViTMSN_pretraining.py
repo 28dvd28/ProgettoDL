@@ -28,6 +28,8 @@ class MyViTMSNModel_pretraining(nn.Module):
 
         if self.vitMsn_anchor.embeddings.mask_token is None:
             self.vitMsn_anchor.embeddings.mask_token = nn.Parameter(torch.zeros(1, 1, self.vitMsn_anchor.config.hidden_size))
+        if self.vitMsn_target.embeddings.mask_token is None:
+            self.vitMsn_target.embeddings.mask_token = nn.Parameter(torch.zeros(1, 1, self.vitMsn_anchor.config.hidden_size))
 
         for param in self.vitMsn_target.parameters():
             param.requires_grad = False
@@ -44,30 +46,13 @@ class MyViTMSNModel_pretraining(nn.Module):
 
         output_anchor = self.vitMsn_anchor(img_anchor, bool_masked_pos=bool_masked_pos)[0]
         output_anchor = nn.functional.normalize(output_anchor[:, 0, :])
-        output_anchor = nn.functional.softmax(output_anchor @ self.prototypes.T / self.tau) @ self.prototypes_labels
+        output_anchor = nn.functional.softmax(output_anchor @ self.prototypes.T / self.tau, dim=1)
 
         output_target = self.vitMsn_target(img_target)[0]
         output_target = nn.functional.normalize(output_target[:, 0, :])
-        output_target = nn.functional.softmax(output_target @ self.prototypes.T / self.tau) @ self.prototypes_labels
+        output_target = nn.functional.softmax(output_target @ self.prototypes.T / self.tau, dim=1)
 
         return output_anchor, output_target
-
-
-    def parameters(self):
-
-        """
-        Function for the creation of the list of parameters of the model, will return only the parameters of the anchor
-        vision transformer and the learnable prototypes
-        """
-
-        params = [*list(self.vitMsn_anchor.parameters()), {
-            'params': [self.prototypes],
-            'LARS_exclude': True,
-            'WD_exclude': True,
-            'weight_decay': 0
-        }]
-
-        return params
 
 
     def mask_generator(self, batch_size: int, patch_numbers: int) -> torch.Tensor:
@@ -102,10 +87,10 @@ class MyViTMSNModel_pretraining(nn.Module):
             prototypes = torch.empty(num_proto, output_dim)
             _sqrt_k = (1. / output_dim) ** 0.5
             torch.nn.init.uniform_(prototypes, -_sqrt_k, _sqrt_k)
-            prototypes = torch.nn.parameter.Parameter(prototypes).to(self.device)
+            prototypes = torch.nn.Parameter(prototypes.to(self.device))
 
             proto_labels = nn.functional.one_hot(torch.tensor([i for i in range(num_proto)]), num_proto)
-            prototypes.requires_grad = True
+            proto_labels = proto_labels.to(self.device).to(torch.float)
 
         return prototypes, proto_labels
 
