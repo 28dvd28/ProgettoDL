@@ -2,7 +2,7 @@ from idlelib.pyshell import MyRPCClient
 
 import torch
 import torch.nn as nn
-from transformers import ViTMSNModel, AutoImageProcessor
+from transformers import ViTMSNModel, AutoImageProcessor, ViTConfig
 
 
 class MyViTMSNModel_pretraining(nn.Module):
@@ -18,8 +18,9 @@ class MyViTMSNModel_pretraining(nn.Module):
     def __init__(self, ipe, num_epochs, pretrained_model_name_or_path : str = 'facebook/vit-msn-small', device : str = 'cpu'):
         super(MyViTMSNModel_pretraining, self).__init__()
         self.image_processor = AutoImageProcessor.from_pretrained("facebook/vit-msn-small")
-        self.vitMsn_target = ViTMSNModel.from_pretrained(pretrained_model_name_or_path)
-        self.vitMsn_anchor = ViTMSNModel.from_pretrained(pretrained_model_name_or_path)
+        config = ViTConfig(num_hidden_layers=12, hidden_size=384, num_attention_heads=6, intermediate_size=1536)
+        self.vitMsn_target = ViTMSNModel(config)
+        self.vitMsn_anchor = ViTMSNModel(config)
         self.device = device
         self.train_phase = True
         self.tau = 0.1
