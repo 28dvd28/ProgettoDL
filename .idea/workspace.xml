@@ -4,7 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit and push" />
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.07 2/08/2024">
+      <change beforePath="$PROJECT_DIR$/Masked Siamese Networks for Label-Efficient Learning.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/2204.07141v1.pdf" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -220,7 +222,6 @@
       <workItem from="1722978825734" duration="1577000" />
       <workItem from="1722980919860" duration="3797000" />
       <workItem from="1722992142027" duration="47000" />
-      <workItem from="1722992306993" duration="2308000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
@@ -270,31 +271,7 @@
       <option name="project" value="LOCAL" />
       <updated>1722619981396</updated>
     </task>
-    <task id="LOCAL-00007" summary="Commit and push">
-      <option name="closed" value="true" />
-      <created>1722992536400</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1722992536400</updated>
-    </task>
-    <task id="LOCAL-00008" summary="Commit and push">
-      <option name="closed" value="true" />
-      <created>1722994653247</created>
-      <option name="number" value="00008" />
-      <option name="presentableId" value="LOCAL-00008" />
-      <option name="project" value="LOCAL" />
-      <updated>1722994653247</updated>
-    </task>
-    <task id="LOCAL-00009" summary="Commit and push">
-      <option name="closed" value="true" />
-      <created>1722994929874</created>
-      <option name="number" value="00009" />
-      <option name="presentableId" value="LOCAL-00009" />
-      <option name="project" value="LOCAL" />
-      <updated>1722994929874</updated>
-    </task>
-    <option name="localTasksCounter" value="10" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -307,8 +284,7 @@
     <MESSAGE value="Commit.01 1/08/2024" />
     <MESSAGE value="Commit.05 2/08/2024" />
     <MESSAGE value="Commit.06 2/08/2024" />
-    <MESSAGE value="Commit and push" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit and push" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit.06 2/08/2024" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

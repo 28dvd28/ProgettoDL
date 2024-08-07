@@ -44,6 +44,9 @@ def me_max_regularization(anchor: torch.Tensor):
     me_max_loss = - torch.sum(torch.log(avg_anchor**(-avg_anchor))) + math.log(float(len(avg_anchor)))
     return me_max_loss
 
+def entropy_regularization(anchor: torch.Tensor):
+    return torch.mean(torch.sum(torch.log(anchor**(-anchor)), dim=1))
+
 
 
 def training_loop():
@@ -78,7 +81,7 @@ def training_loop():
 
             output_anchor, output_target = model(inputs_anchor, inputs_target)
 
-            loss_value = cross_entropy_criterion(output_anchor, output_target) + me_max_regularization(output_anchor)
+            loss_value = cross_entropy_criterion(output_anchor, output_target) + 5 * me_max_regularization(output_anchor) + entropy_regularization(output_anchor)
             running_train_loss += loss_value.detach()
             loss_value.backward()
 
