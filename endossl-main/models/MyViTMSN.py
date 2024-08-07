@@ -1,6 +1,5 @@
 import torch
 import torch.nn as nn
-from torchvision.models import vit_b_16, ViT_B_16_Weights
 from transformers import ViTMSNModel, AutoImageProcessor
 
 class MyViTMSNModel(nn.Module):

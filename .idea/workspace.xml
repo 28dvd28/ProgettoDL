@@ -4,23 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commint and Push">
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.07 2/08/2024">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/LICENSE" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000001.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000002.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000003.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000004.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000005.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000006.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000007.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000008.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000009.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/cholec80/samples/video01_000010.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/model.png" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/model.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/models/MyViTMSN_pretraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/models/MyViTMSN_pretraining.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/data/polypset_dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/polypset_dataloader.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/polypset_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/polypset_detection.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -46,7 +34,7 @@
   <component name="GithubPullRequestsUISettings">{
   &quot;selectedUrlAndAccountId&quot;: {
     &quot;url&quot;: &quot;https://github.com/28dvd28/ProgettoDL.git&quot;,
-    &quot;accountId&quot;: &quot;2898f01f-4d61-43d4-bf47-c67a4ed7586e&quot;
+    &quot;accountId&quot;: &quot;00d16ace-e562-455d-9a43-85f5a1f3527c&quot;
   }
 }</component>
   <component name="ProjectColorInfo">{
@@ -63,15 +51,14 @@
   &quot;keyToString&quot;: {
     &quot;Python.FlowNet2.executor&quot;: &quot;Run&quot;,
     &quot;Python.Main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.MyViTMSN.executor&quot;: &quot;Run&quot;,
-    &quot;Python.MyViTMSN_pretraining.executor&quot;: &quot;Debug&quot;,
+    &quot;Python.ViT_pretraining.executor&quot;: &quot;Run&quot;,
     &quot;Python.channelnorm_cuda.executor&quot;: &quot;Run&quot;,
     &quot;Python.cholec80_images.executor&quot;: &quot;Run&quot;,
     &quot;Python.config.executor&quot;: &quot;Run&quot;,
     &quot;Python.demo.executor&quot;: &quot;Run&quot;,
     &quot;Python.experiment.executor&quot;: &quot;Run&quot;,
     &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.pretraining_ViT.executor&quot;: &quot;Run&quot;,
+    &quot;Python.pretraining_ViT.executor&quot;: &quot;Debug&quot;,
     &quot;Python.resample2d.executor&quot;: &quot;Run&quot;,
     &quot;Python.test.executor&quot;: &quot;Run&quot;,
     &quot;Python.testcholeco80_images.executor&quot;: &quot;Run&quot;,
@@ -97,26 +84,25 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.12994792" />
-      <window_info id="Commit" order="1" weight="0.2841146" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19453125" />
+      <window_info id="Commit" order="1" weight="0.23723958" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" show_stripe_button="false" />
       <window_info anchor="bottom" id="HfCacheToolWindow" show_stripe_button="false" />
+      <window_info anchor="bottom" id="File Transfer" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.3619186" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.51405036" />
-      <window_info anchor="bottom" id="Run" order="7" weight="0.2999031" />
-      <window_info anchor="bottom" id="Debug" order="8" weight="0.2999031" />
-      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32994187" />
-      <window_info anchor="bottom" id="Find" order="10" weight="0.32994187" />
-      <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.51405036" />
+      <window_info anchor="bottom" id="Find" order="8" weight="0.32994187" />
       <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
+      <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
       <window_info anchor="right" id="documentation.v2" side_tool="true" />
       <window_info anchor="right" id="Coverage" show_stripe_button="false" side_tool="true" />
       <window_info anchor="right" id="SciView" show_stripe_button="false" />
@@ -137,11 +123,11 @@
       <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\FlowNet2\example" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/endossl-main/cholec80" />
-      <recent name="$PROJECT_DIR$/endossl-main/exps/PretrainedModels" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\ProgettoDL\endossl-main\exps\polypTest" />
       <recent name="$PROJECT_DIR$/endossl-main/exps/classifierCholec80" />
       <recent name="$PROJECT_DIR$/endossl-main/exps/PretrainedModels/tmp" />
       <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\endossl-main\cholec80\cholec80\frames" />
+      <recent name="C:\Users\cordi\Desktop\Cartella personale\Compiti scolastici\Materiale università\Magistrale\Primo Anno\Machine and deep learning\Progetto\endossl-main\cholec80\cholec80\video01" />
     </key>
   </component>
   <component name="RunManager" selected="Python.Main">
@@ -200,8 +186,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-410509235cf1-JavaScript-PY-242.20224.89" />
-        <option value="bundled-python-sdk-c82b4742cc6a-39cff9de6eef-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-242.20224.89" />
+        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.18034.82" />
+        <option value="bundled-python-sdk-975db3bf15a3-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.18034.82" />
       </set>
     </attachedChunks>
   </component>
@@ -230,24 +216,14 @@
       <workItem from="1722456083768" duration="5774000" />
       <workItem from="1722522317242" duration="16833000" />
       <workItem from="1722552034673" duration="5808000" />
-      <workItem from="1722594048977" duration="13306000" />
-      <workItem from="1722642099136" duration="3361000" />
-      <workItem from="1722646140851" duration="311000" />
-      <workItem from="1722647127285" duration="6000" />
-      <workItem from="1722688003583" duration="859000" />
-      <workItem from="1722688901704" duration="536000" />
-      <workItem from="1722689858471" duration="3099000" />
-      <workItem from="1722695949135" duration="17155000" />
-      <workItem from="1722811815954" duration="1240000" />
-      <workItem from="1722813304578" duration="1818000" />
-      <workItem from="1722815651723" duration="4953000" />
-      <workItem from="1722820902663" duration="7478000" />
-      <workItem from="1722860838392" duration="796000" />
-      <workItem from="1722862432561" duration="344000" />
-      <workItem from="1722863717025" duration="52000" />
-      <workItem from="1722863838096" duration="3484000" />
-      <workItem from="1722953414615" duration="6216000" />
-      <workItem from="1722963967254" duration="376000" />
+      <workItem from="1722594048977" duration="2984000" />
+      <workItem from="1722617154264" duration="7709000" />
+      <workItem from="1722635358498" duration="260000" />
+      <workItem from="1722635749621" duration="167000" />
+      <workItem from="1722636029315" duration="3007000" />
+      <workItem from="1722967812861" duration="7000" />
+      <workItem from="1722978825734" duration="1577000" />
+      <workItem from="1722980919860" duration="3797000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
@@ -281,31 +257,23 @@
       <option name="project" value="LOCAL" />
       <updated>1722530844879</updated>
     </task>
-    <task id="LOCAL-00005" summary="Commit.04 2/08/2024">
+    <task id="LOCAL-00005" summary="Commit.05 2/08/2024">
       <option name="closed" value="true" />
-      <created>1722597766840</created>
+      <created>1722613914742</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1722597766840</updated>
+      <updated>1722613914742</updated>
     </task>
-    <task id="LOCAL-00006" summary="Commit 4/08/2024">
+    <task id="LOCAL-00006" summary="Commit.06 2/08/2024">
       <option name="closed" value="true" />
-      <created>1722793558906</created>
+      <created>1722619981396</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1722793558906</updated>
+      <updated>1722619981396</updated>
     </task>
-    <task id="LOCAL-00007" summary="Commint and Push">
-      <option name="closed" value="true" />
-      <created>1722857392772</created>
-      <option name="number" value="00007" />
-      <option name="presentableId" value="LOCAL-00007" />
-      <option name="project" value="LOCAL" />
-      <updated>1722857392772</updated>
-    </task>
-    <option name="localTasksCounter" value="8" />
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -316,26 +284,37 @@
     <MESSAGE value="Commit.01 26/07/2024: terminata conversione altri file" />
     <MESSAGE value="Commit.01 28/07/2024: training di base senza errori comepletato" />
     <MESSAGE value="Commit.01 1/08/2024" />
-    <MESSAGE value="Commit.04 2/08/2024" />
-    <MESSAGE value="Commit 4/08/2024" />
-    <MESSAGE value="Commint and Push" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commint and Push" />
+    <MESSAGE value="Commit.05 2/08/2024" />
+    <MESSAGE value="Commit.06 2/08/2024" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit.06 2/08/2024" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/endossl-main/down_stream/pretraining_ViT.py</url>
+          <line>52</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/Progetto$demo.coverage" NAME="demo Coverage Results" MODIFIED="1721779799181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/ProgettoDL$cholec80_images.coverage" NAME="cholec80_images Coverage Results" MODIFIED="1722630116663" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
     <SUITE FILE_PATH="coverage/Progetto$FlowNet2.coverage" NAME="FlowNet2 Coverage Results" MODIFIED="1721689721592" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/Progetto$config.coverage" NAME="config Coverage Results" MODIFIED="1721941386901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
+    <SUITE FILE_PATH="coverage/ProgettoDL$ViT_pretraining.coverage" NAME="ViT_pretraining Coverage Results" MODIFIED="1722619488264" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
+    <SUITE FILE_PATH="coverage/Progetto$testcholeco80_images.coverage" NAME="testcholeco80_images Coverage Results" MODIFIED="1721836716931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
+    <SUITE FILE_PATH="coverage/ProgettoDL$pretraining_ViT.coverage" NAME="pretraining_ViT Coverage Results" MODIFIED="1722614691645" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
     <SUITE FILE_PATH="coverage/Progetto$Main.coverage" NAME="Main Coverage Results" MODIFIED="1722217708729" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="" />
+    <SUITE FILE_PATH="coverage/Progetto$test.coverage" NAME="test Coverage Results" MODIFIED="1722008567149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Progetto$main.coverage" NAME="main Coverage Results" MODIFIED="1722020171659" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
+    <SUITE FILE_PATH="coverage/Progetto$cholec80_images.coverage" NAME="cholec80_images Coverage Results" MODIFIED="1722019136153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
+    <SUITE FILE_PATH="coverage/ProgettoDL$test.coverage" NAME="test Coverage Results" MODIFIED="1722629109669" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main" />
     <SUITE FILE_PATH="coverage/Progetto$resample2d.coverage" NAME="resample2d Coverage Results" MODIFIED="1721779817279" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/FlowNet2/networks/resample2d_package" />
     <SUITE FILE_PATH="coverage/Progetto$experiment.coverage" NAME="experiment Coverage Results" MODIFIED="1722020150182" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
-    <SUITE FILE_PATH="coverage/Progetto$config.coverage" NAME="config Coverage Results" MODIFIED="1721941386901" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
     <SUITE FILE_PATH="coverage/Progetto$channelnorm_cuda.coverage" NAME="channelnorm_cuda Coverage Results" MODIFIED="1721779586176" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$USER_HOME$/.conda/envs/dl-rl-env/Lib/site-packages/channelnorm_cuda-0.0.0-py3.9-win-amd64.egg" />
-    <SUITE FILE_PATH="coverage/ProgettoDL$pretraining_ViT.coverage" NAME="pretraining_ViT Coverage Results" MODIFIED="1722552194526" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/down_stream" />
-    <SUITE FILE_PATH="coverage/ProgettoDL$MyViTMSN.coverage" NAME="MyViTMSN Coverage Results" MODIFIED="1722787353063" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/models" />
-    <SUITE FILE_PATH="coverage/Progetto$cholec80_images.coverage" NAME="cholec80_images Coverage Results" MODIFIED="1722019136153" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
-    <SUITE FILE_PATH="coverage/Progetto$demo.coverage" NAME="demo Coverage Results" MODIFIED="1721779799181" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/ProgettoDL$MyViTMSN_pretraining.coverage" NAME="MyViTMSN_pretraining Coverage Results" MODIFIED="1722812111967" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/models" />
-    <SUITE FILE_PATH="coverage/Progetto$test.coverage" NAME="test Coverage Results" MODIFIED="1722008567149" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/Progetto$train_lib.coverage" NAME="train_lib Coverage Results" MODIFIED="1722019682732" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/train" />
-    <SUITE FILE_PATH="coverage/Progetto$testcholeco80_images.coverage" NAME="testcholeco80_images Coverage Results" MODIFIED="1721836716931" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/endossl-main/data" />
   </component>
 </project>
