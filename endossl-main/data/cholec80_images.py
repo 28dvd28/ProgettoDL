@@ -22,6 +22,11 @@ _LABEL_NUM_MAPPING = {
 
 _CHOLEC80_SPLIT = {'train': range(1, 21)}
 
+# For the classifier uncomment this part and comment the line above
+# _CHOLEC80_SPLIT = {'train': range(1, 41),
+#                    'validation': range(41, 49),
+#                    'test': range(49, 81)}
+
 curr_dir = os.path.dirname(os.path.realpath(__file__))
 config_path = os.path.join(curr_dir, 'config.json')
 

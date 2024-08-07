@@ -40,6 +40,8 @@ class Config:
 
 
 def me_max_regularization(anchor: torch.Tensor):
+    """Function that can be used for implement the ME-MAX regularization"""
+
     avg_anchor = torch.mean(anchor, dim=0)
     me_max_loss = - torch.sum(torch.log(avg_anchor**(-avg_anchor))) + math.log(float(len(avg_anchor)))
     return me_max_loss

@@ -27,8 +27,8 @@ class Config:
 
     # model
     model = 'vit'
-    pretrained = True
-    model_name = 'model_0.pth'
+    pretrained = False
+    model_name = 'model_29.pth'
     pretrained_path = os.path.join('exps', 'pretraining', 'checkpoints', model_name)
 
     # dataset info
@@ -41,7 +41,7 @@ class Config:
 
     # optimization
     optimize_name = 'adam'
-    learning_rate =  5e-3
+    learning_rate =  1e-4
     weight_decay = 1e-5
 
     # training
@@ -52,6 +52,11 @@ class Config:
 
 def train_loop():
 
+    datasets = cholec80_images.get_pytorch_dataloaders(
+        data_root=Config.data_root,
+        batch_size=Config.batch_size
+    )
+
     if Config.model == 'resnet50':
         model = models.resnet50()
         for param in model.parameters():
@@ -59,9 +64,9 @@ def train_loop():
         model.fc = nn.Linear(model.fc.in_features, Config.num_classes)
     elif 'vit' == Config.model:
         model = MyViTMSNModel(device=device)
-        pretrained_model = MyViTMSNModel_pretraining(device=device)
 
         if Config.pretrained:
+            pretrained_model = MyViTMSNModel_pretraining(ipe=len(datasets['train']), num_epochs=Config.num_epochs, device=device)
             model_path = Config.pretrained_path
             pretrained_model.load_state_dict(torch.load(model_path))
 
@@ -72,11 +77,6 @@ def train_loop():
             param.requires_grad = False
     else:
         raise ValueError('Invalid model name: {}'.format(Config.model))
-
-    datasets = cholec80_images.get_pytorch_dataloaders(
-        data_root=Config.data_root,
-        batch_size=Config.batch_size
-    )
 
     model.to(device)
     optimizer = optim.Adam(model.parameters(), lr=Config.learning_rate, weight_decay=Config.weight_decay)
@@ -149,6 +149,15 @@ def train_loop():
 
 
 def test_loop(model_path : str):
+    """Function for executing a test loop over the cholec80 dataset.
+    The results will be saved in tensorflow in the experiment direcotry that can be found in the Config class at the
+    top of the current file.
+
+    The metric that has been used and that it is monitored is the multiclass macro F1 score.
+
+    Args:
+        model_path: a string containing the path for the trained model over which execute the testing part
+    """
 
     datasets = cholec80_images.get_pytorch_dataloaders(
         data_root=Config.data_root,
@@ -189,5 +198,7 @@ def test_loop(model_path : str):
 
 
 if __name__ == '__main__':
-    # test_loop('exps/cholec80_classifier/checkpoints/model_19.pth')
     train_loop()
+
+    # example of usage of the test loop function
+    # test_loop('exps/cholec80_classifier/checkpoints/model_19.pth')
