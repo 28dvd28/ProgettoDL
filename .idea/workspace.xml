@@ -5,10 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.07 2/08/2024">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/polypset_dataloader.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/polypset_dataloader.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/polypset_detection.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/polypset_detection.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/models/MyViTMSN.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Masked Siamese Networks for Label-Efficient Learning.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/2204.07141v1.pdf" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,6 +221,7 @@
       <workItem from="1722967812861" duration="7000" />
       <workItem from="1722978825734" duration="1577000" />
       <workItem from="1722980919860" duration="3797000" />
+      <workItem from="1722992142027" duration="47000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
