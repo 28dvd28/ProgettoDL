@@ -4,8 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit.07 2/08/2024">
-      <change beforePath="$PROJECT_DIR$/Masked Siamese Networks for Label-Efficient Learning.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/2204.07141v1.pdf" afterDir="false" />
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commint and Push">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -81,23 +81,24 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19453125" />
-      <window_info id="Commit" order="1" weight="0.23723958" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.13515624" />
+      <window_info id="Commit" order="1" weight="0.18723959" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" show_stripe_button="false" />
       <window_info anchor="bottom" id="HfCacheToolWindow" show_stripe_button="false" />
-      <window_info anchor="bottom" id="File Transfer" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.314438" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.51405036" />
-      <window_info anchor="bottom" id="Run" order="7" weight="0.51405036" />
-      <window_info anchor="bottom" id="Find" order="8" weight="0.32994187" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.2999031" />
+      <window_info anchor="bottom" id="Debug" order="8" weight="0.2999031" />
+      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32994187" />
+      <window_info anchor="bottom" id="Find" order="10" weight="0.32994187" />
       <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
       <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
       <window_info anchor="right" id="documentation.v2" side_tool="true" />
@@ -271,7 +272,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722619981396</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Commint and Push">
+      <option name="closed" value="true" />
+      <created>1722997753472</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1722997753472</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -284,7 +293,8 @@
     <MESSAGE value="Commit.01 1/08/2024" />
     <MESSAGE value="Commit.05 2/08/2024" />
     <MESSAGE value="Commit.06 2/08/2024" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commit.06 2/08/2024" />
+    <MESSAGE value="Commint and Push" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commint and Push" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
