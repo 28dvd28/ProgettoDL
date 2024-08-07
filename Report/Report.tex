@@ -76,16 +76,16 @@
 	\begin{table}[ht]
 			\centering
 			\resizebox{\textwidth}{!}{%
-			\begin{tabular}{|l|c|c|c|c|}
+			\begin{tabular}{|l|c|c|c|c|c|}
 				\hline
 				\textbf{Model} & \textbf{Hidden Layers} & \textbf{Hidden dim size} & \textbf{Num heads}
-				& \textbf{Num params} \\
+				& \textbf{Num params} & MLP size \\
 				\hline
-				ViT-Small & 12 & 384 & 6 & 22M \\
+				ViT-Small & 12 & 384 & 6 & 22M & 1536\\
 				\hline
-				ViT-Base & 12 & 768 & 12 & 86M \\
+				ViT-Base & 12 & 768 & 12 & 86M & 3072\\
 				\hline
-				ViT-Large & 24 & 1024 & 16 & 307M\\
+				ViT-Large & 24 & 1024 & 16 & 307M & 4096\\
 				\hline
 		\end{tabular}%
 		}
