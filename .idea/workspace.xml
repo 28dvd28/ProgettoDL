@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commint and Push">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/data/cholec80_images.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/data/config.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/ViT_pretraining.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" beforeDir="false" afterPath="$PROJECT_DIR$/endossl-main/down_stream/cholec80_classifier.py" afterDir="false" />
-    </list>
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit and push" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -85,24 +79,23 @@
       <window_info id="Commit_Guest" show_stripe_button="false" />
       <window_info id="Pull Requests" show_stripe_button="false" />
       <window_info id="Learn" show_stripe_button="false" />
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15963542" />
-      <window_info id="Commit" order="1" weight="0.15963542" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.19453125" />
+      <window_info id="Commit" order="1" weight="0.23723958" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Database Changes" show_stripe_button="false" />
       <window_info anchor="bottom" id="TypeScript" show_stripe_button="false" />
       <window_info anchor="bottom" id="TODO" show_stripe_button="false" />
       <window_info anchor="bottom" id="HfCacheToolWindow" show_stripe_button="false" />
+      <window_info anchor="bottom" id="File Transfer" show_stripe_button="false" />
       <window_info anchor="bottom" id="Version Control" order="0" />
       <window_info anchor="bottom" id="Problems" order="1" />
       <window_info anchor="bottom" id="Problems View" order="2" />
-      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.39292637" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="3" visible="true" weight="0.32994187" />
       <window_info anchor="bottom" id="Services" order="4" />
       <window_info anchor="bottom" id="Python Packages" order="5" weight="0.1" />
       <window_info anchor="bottom" id="Python Console" order="6" weight="0.51405036" />
-      <window_info anchor="bottom" id="Run" order="7" weight="0.2999031" />
-      <window_info anchor="bottom" id="Debug" order="8" weight="0.2999031" />
-      <window_info anchor="bottom" id="File Transfer" order="9" weight="0.32994187" />
-      <window_info anchor="bottom" id="Find" order="10" weight="0.32994187" />
+      <window_info anchor="bottom" id="Run" order="7" weight="0.51405036" />
+      <window_info anchor="bottom" id="Find" order="8" weight="0.32994187" />
       <window_info anchor="right" id="Remote Host" show_stripe_button="false" />
       <window_info anchor="right" id="Endpoints" show_stripe_button="false" />
       <window_info anchor="right" id="documentation.v2" side_tool="true" />
@@ -227,6 +220,7 @@
       <workItem from="1722978825734" duration="1577000" />
       <workItem from="1722980919860" duration="3797000" />
       <workItem from="1722992142027" duration="47000" />
+      <workItem from="1722992306993" duration="2308000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
@@ -276,23 +270,31 @@
       <option name="project" value="LOCAL" />
       <updated>1722619981396</updated>
     </task>
-    <task id="LOCAL-00007" summary="Commint and Push">
+    <task id="LOCAL-00007" summary="Commit and push">
       <option name="closed" value="true" />
-      <created>1722997753472</created>
+      <created>1722992536400</created>
       <option name="number" value="00007" />
       <option name="presentableId" value="LOCAL-00007" />
       <option name="project" value="LOCAL" />
-      <updated>1722997753472</updated>
+      <updated>1722992536400</updated>
     </task>
-    <task id="LOCAL-00008" summary="Commint and Push">
+    <task id="LOCAL-00008" summary="Commit and push">
       <option name="closed" value="true" />
-      <created>1723044509849</created>
+      <created>1722994653247</created>
       <option name="number" value="00008" />
       <option name="presentableId" value="LOCAL-00008" />
       <option name="project" value="LOCAL" />
-      <updated>1723044509849</updated>
+      <updated>1722994653247</updated>
     </task>
-    <option name="localTasksCounter" value="9" />
+    <task id="LOCAL-00009" summary="Commit and push">
+      <option name="closed" value="true" />
+      <created>1722994929874</created>
+      <option name="number" value="00009" />
+      <option name="presentableId" value="LOCAL-00009" />
+      <option name="project" value="LOCAL" />
+      <updated>1722994929874</updated>
+    </task>
+    <option name="localTasksCounter" value="10" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -305,8 +307,8 @@
     <MESSAGE value="Commit.01 1/08/2024" />
     <MESSAGE value="Commit.05 2/08/2024" />
     <MESSAGE value="Commit.06 2/08/2024" />
-    <MESSAGE value="Commint and Push" />
-    <option name="LAST_COMMIT_MESSAGE" value="Commint and Push" />
+    <MESSAGE value="Commit and push" />
+    <option name="LAST_COMMIT_MESSAGE" value="Commit and push" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>

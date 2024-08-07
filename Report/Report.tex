@@ -7,13 +7,14 @@
 \usepackage{multicol} % Per gestire le colonne
 \usepackage{hyperref}
 \usepackage{booktabs}
-\usepackage[left=3cm,right=3cm]{geometry}
+\usepackage[left=2.8cm,right=2.8cm]{geometry}
 
 
 
 % Informazioni sul documento
 \title{Self-Supervised Learning for Endoscopic Video Analysis - PyTorch implementation}
 \author{Cordioli Davide - VR510529}
+\date{}
 
 \begin{document}
 	
@@ -25,11 +26,11 @@
 	
 	PyTorch is probably the most used framework for developing artificial intelligence applications, thanks to its intuitive approach. In this project it has been studied the code that can be found in the GitHub repository  \href{https://github.com/royhirsch/endossl}{RoyHirsch / endossl}, which has been written using TensorFlow, with the objective of replicating it using PyTorch.
 	
-	The code is referred to the paper \textit{Self-Supervised Learning for Endoscopic Video Analysis} [1], where is described how the Masked Siamese Networks (MSN), a technique for Self Supervised Learning (SSL), can be applied to endoscopic video. MSN, that will be explained better latter on, allow us to build a model capable of extracting the most relevant features from the image, features that can be then used for tasks like frame classifications.
+	The code is referred to the paper \textit{Self-Supervised Learning for Endoscopic Video Analysis} [1], where is described how the Masked Siamese Networks (MSN), a technique for Self Supervised Learning (SSL), can be applied to endoscopic video. MSN, that will be explained better latter on, allow us to build a model capable of extracting the most relevant features from the images, based on the natural clustering of the data. Using transfer learning, the MSN pre-trained model is then used for a classifications task over the Cholec80 dataset, where it has been shown to reach state of the art performances using only the 50\% of labeled data.
 	
 	\section{Objective}
 	
-	As the original paper has reported, the applications of MSN, done on 7 TPU, required a total of 800 epochs of training for the smallest model, with a batch size of 1024. The authors of the original code had uploaded the pre-trained model in JAX, but the conversion in PyTorch was not possible. So, at the beginning it has been used another pre-trained model, trained using ImageNet-1K, which could have been used with PyTorch, but the classification converged to very poor results. 
+	As the original paper has reported, the applications of MSN, done on 7 TPU, required a total of 800 epochs of training for the smallest model, with a batch size of 1024. The authors of the original code had uploaded the pre-trained model in JAX, but the conversion in PyTorch was not possible. So, at the beginning it has been used another pre-trained model, trained using ImageNet-1K, which could have been used with PyTorch, but the classification converged to very poor results, probably because of the strong difference between the two datasets.
 	
 	For this reason it has been decided to develop the MSN training procedure, which execution was not executed as the paper described since our devices are not such powerful as 7 TPU, but it has been reproduced over a few epochs, with reduced batch size, in order to show the convergence of MSN technique over Cholec80 dataset.
 	
@@ -98,16 +99,24 @@
 		
 	\section{Experiments}
 	
-	The experiment conducted over the Cholec80 datasets for a total of 30 epochs using a batch size of 150. The loss computed is the cross entropy that it has been shown to converge to a value of 5.93, that despite its high value, over a probability vector of 1024 element is very low. 
+	The experiment has done over the Cholec80 dataset, that is an endoscopic video dataset containing 80 videos of cholecystectomy surgeries, labeled with the phase and tool presence annotations. The labeling in this experiment was not used since MSN is a SSL technique.
+	
+	The experiment was conducted usinf \textit{ViT-Small configurations}, for a total of 30 epochs using a batch size of 150. The loss computed is the cross entropy, to which is subtracted the ME-MAX regularizer value and the entropy regularizer value. The values of the total loss computed across all the epochs is shown in the following graph. 
+	\includegraphics[width=0.9\linewidth]{Images/screenshot002}
+	
+	The $\lambda$ value used for the ME-MAX regularizer is 5 and for the entropy was 1. The masking of the patches is of 50\% of the overall patches and it was used random masking. The optimizer used is AdamW with a learning rate of $0.001$ and a weight decay of $0.01$. 
+	
+	
 	
 	\section{Conclusion}
 	
-	Probably a way for improving the results can be for sure using bigger models and training over a higher number of epochs, since the results described in the above section could represent a shoulder point that after more epochs would have been surpassed.
+	As we can see at the beginning of the training it has been encountered a shoulder point, that only after 15 epochs has bees surpassed, starting a convergence that probably could go on also after the 30th epochs, even if from the 20th iteration the convergence started to gradually slow down. As the first phase is showing, this is a problem in which it can be encountered some plateau points, that is the reason why in the original paper the total number of epochs are 800. 
+	
+	An important limitations in our training loop is for sure the batch size, that is almost 7 times smaller than the original batch size. This led during the training to have a strong oscillation in the loss in each epoch, that with a bigger batch can be reduced, reducing also the \textit{'perplexity'} in the direction of the learning gradient, allowing also a faster and more precise convergence. 
+	
+	Another improvement that can be introduced is a \textit{plateau scheduler} that reduce the learning rate when is encountered a plateau part, that some times allow the model to surpass this stalling situation.
 		
 	\end{multicols}
-	
-	
-	
 
 	
 	\begin{thebibliography}{9}
