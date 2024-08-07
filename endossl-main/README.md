@@ -1,73 +1,91 @@
-# Self-Supervised Learning for Endoscopic Video Analysis
+# Self-supervised Lerning for Endoscopic Video Analysis -- PyTorch implementation
 
-Code and models for MICCAI23 paper: "Self-Supervised Learning for Endoscopy Video Analysis".
+This repository contains the translated code in PyTorch for the paper "Self-supervised Learning for Endoscopic Video 
+Analysis" (https://arxiv.org/pdf/2308.12394v1). The original code is available in [this repository](https://github.com/royhirsch/endossl).
 
-
-## Background
-Self-supervised learning (SSL) has led to important breakthroughs in computer vision by allowing learning from large amounts of unlabeled data. As such, it might have a pivotal role to play in biomedicine where annotating data requires a highly specialized expertise.
-
-In this work, we study the use of a leading SSL framework, Masked Siamese Networks (MSNs), for endoscopic video analysis such as colonoscopy and laparoscopy. To fully exploit the power of SSL, we create sizable endoscopic video datasets. Our extensive experiments show that MSN training on this data leads to state-of-the-art performance in public standard endoscopic benchmarks such as surgical phase recognition during laparoscopy and in colonoscopic polyp characterization. 
-
-Furthermore, we show that 50% the annotated data are sufficient to match the performance when training on the entire labeled datasets. Our work provides evidence that SSL can dramatically reduce the need of annotated data in endoscopy.
-
-
-![alt text](model.png)
-
-
-## Pre-trained models
-We release a series of models pre-trained with our method over a large corpus of endoscopic videos:
-
-
-| Arch | Dataset | Down-stream results | Link |
-| - | - | - | - |
-| ViT-S | Private Laparoscopy | Cholec80 F1: 83.4 | [Link](https://drive.google.com/drive/folders/1CctMDXGo8AlyZQSoWwiVyssMrEBZp3IE?usp=drive_link) |
-| ViT-B | Private Laparoscopy | Cholec80 F1: 82.6 | [Link](https://drive.google.com/drive/folders/1zcLKhE7H50GIDeb53chLrE5SUBtBooAR?usp=drive_link) |
-| ViT-L | Private Laparoscopy | Cholec80 F1: 84.0 | [Link](https://drive.google.com/drive/folders/11TdNyl4HGvpoi6Ro0zZ28L1qxY4IAJPb?usp=drive_link) |
-| - | - | - | - |
-| ViT-S | Private Colonoscopy | PolypSet Acc: 78.5 | [Link](https://drive.google.com/drive/folders/1GfBVLh3r6A2ctkJyy_1Uc0onSg8tNykM?usp=drive_link) |
-| ViT-B | Private Colonoscopy | PolypSet Acc: 78.2 | [Link](https://drive.google.com/drive/folders/1-ispnt7CElWxntmA61XDDHbbBDwZ6njN?usp=drive_link) |
-| ViT-L | Private Colonoscopy | PolypSet Acc: 80.4 | [Link](https://drive.google.com/drive/folders/1eq_KcAY_OQU07Ey8XFpvWlsZhMDfl86K?usp=drive_link) |
-
-## Repository
+All the implementations details can be found in the code where each file it has been carefully documented. Here is
+just described the main structure of the project and the folders.
 
 ## Environment
-You may use the ```requirements.`txt``` file for reproduction of our development environment.
-```
-conda create --name <env_name> --file ./requirements.txt
-```
 
-### Data
-We publish the data modules for Cholec80 experiments, which can be easily adopted to the rest of the paper. Our data pipeline is heavily adopted from [TF-Cholec80](https://github.com/CAMMA-public/TF-Cholec80/tree/master). 
+The code has been executed on a linux machine with _Ubuntu 20.04_. The execution was done in a 
+anaconda environment with python 3.12.4. The main requirements are:
 
-Run ```prepare.py``` for downloading and extracting the public Cholec80 dataset:
+- torch 2.4.0 with cuda 12.1
+- torchvision 0.19.0 
+- torchmetrics 1.4.0.post0
+- tensorboard 2.17.0
+- tqdm 4.66.4
+- transformers 4.43.3
+- numpy 2.0.1
 
-```
-python prepare.py --data_rootdir YOUR_LOCATION
-```
-
-The ```./data/cholec80_images.py``` module contains classes for loading the pre-processed datasets into a TF dataset object.
-
-### Down-stream experiments
-```./down_stream/main.py``` is the entry point for running the downstream experiments, where a pre-trained module can be fine-tunned for the task of phase classification.
-
-### Inference
-```./inference.py``` script can be used for loading a pre-trained model and extracting representations from it.
-
-## Citation
-Please cite:
-```
-@misc{hirsch2023selfsupervised,
-      title={Self-Supervised Learning for Endoscopic Video Analysis}, 
-      author={Roy Hirsch and Mathilde Caron and Regev Cohen and Amir Livne and Ron Shapiro and Tomer Golany and Roman Goldenberg and Daniel Freedman and Ehud Rivlin},
-      year={2023},
-      eprint={2308.12394},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
-}
-```
-
-## License
-Our work is licensed under BSD 3-Clause license, as found in the [LICENSE](LICENSE) file.
+Make sure to use an environment with this dependencies installed.
 
 
 
+## Preparation of the dataset
+
+First you need to download the Cholec80 dataset, it can be done just executing the _prepare.py_ file that can
+be fownd in the _data_ folder. For a correct execution you can run the following command
+
+    python prepare.py --data_rootdir YOUR_LOCATION
+
+where _YOUR_LOCATION_ is the location where you want to download the dataset. 
+The script will download the dataset in a .zip file and will then extract it.
+
+## Structure
+
+### Data folder
+In the data folder, other than the _prepare.py_ file, there is the _cholec80_images.py_ file
+that implement the dataloader for the Cholec80 dataset. Its execution can be tested using
+
+    python data/cholec80_images.py
+
+be sure to have your terminal running in the endossl-main folder. Opening the file, at the beginning 
+there is some commented line that must be uncommented based on which training you want to test. In the
+code you will find all the instructions.
+
+### Downstream folder
+
+In the downstream folder there are the files that implement the training parts: _cholec80_classifier.py_ for the 
+frame phase classifier, while _ViT_pretraining.py_ for the MSN pretraining. The execution of the files can be done with
+
+    python downstream/<script>.py
+
+before each execution be sure to create, in the *exps* direcotry, the folders where the checkpoints and training info will be saved, that can be
+changed in the _Config_ class defined at the beginning of each of the above files, overwriting the
+_exp_dir_ values. In the experiment directory must be present two folders, _checkpoints_ and _tb_logs_.
+In the first one will be saved all the model checkpoints, while in the second the tensorboard logs.
+
+If your directory is called for instance _dir_experiment1_, the structure should be like this:
+    
+    exps
+    ├── dir_experiment1
+    │   ├── checkpoints
+    │   └── tb_logs
+Make sure also to have your terminal in the endossl-main folder before launching the scripts.
+
+For the _cholec80_classifier.py_ script, for the testing part you must uncomment the last line of the code,
+while for using a pre-trained model, it must be corrected set the flag _pretrained_ in the Config class to
+True and it must be set the path to the pre-trained model in the _pretrained_path_ and _model_name_ variables.
+
+### Models folder
+In the models folder there are the implementation of the models used. _MyViTMSN.py_ contains the definition class 
+that implements the model for the classifier, while _MyViTMSN_pretraining.py_ contains the definition 
+of the class that implements the model for the self-supervised training.
+
+### Exps folder
+After the download of the project folder, in the exps folder there are only the tensorboard logs of the 
+pretraining part done using MSN, that is the main part of this project, that can be saw launching the command
+    
+        tensorboard --logdir=<path-to-exps>/pretraining/tb_logs
+
+where _<path-to-exps>_ is the path to the exps folder in the endossl-main folder.
+
+It is also possible to see the tensorboard logs of the classifier training that was done in the beginning
+using a pre-trained model over the ImageNet-1k dataset. The logs shows a convergence of the model to
+poor loss and F1 score values. The scores can be saw launching the command
+
+        tensorboard --logdir=<path-to-exps>/cholec80_classifier/tb_logs
+
+where _<path-to-exps>_ is the path to the exps folder in the endossl-main folder.

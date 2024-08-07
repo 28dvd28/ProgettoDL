@@ -52,6 +52,19 @@ class Config:
 
 def train_loop():
 
+    """Function that implements the training loop, using the Cholec80 dataset. The model used is based on the Config
+    class defined above, and for future tests it has been putted a if else statement for execute the training loop over
+    a resnet50 model, that can be useful to see differences in the performance.
+
+    If the Config.pretrained is set to True and the model used is ViT, then it will be used a pretrained model, make sure
+    to set the Config.pretrained_path to the correct path of the pretrained model. If that flag is set to false is used
+    a pretrained model from the Hugging Face library: 'facebook/vit-msn-small', trained over ImengeNet-1K.
+
+    The loop will save each model with a different name at the end of each epoch, in the training part is used
+    the cross-entropy loss as metric, while the validation part uses the macro MultilabelF1Score metric. In the models directory is
+    also saved a txt files with the corresponding losses and metrics for each epoch and each model.
+    """
+
     datasets = cholec80_images.get_pytorch_dataloaders(
         data_root=Config.data_root,
         batch_size=Config.batch_size

@@ -40,18 +40,45 @@ class Config:
 
 
 def me_max_regularization(anchor: torch.Tensor):
-    """Function that can be used for implement the ME-MAX regularization"""
+    """Function that calculate the ME-MAX value for the regularization term
+
+    Parameters:
+        anchor (torch.Tensor): The anchor output tensor of shape (batch_size, num_classes)
+    Returns:
+        the value of the ME-MAX regularization term
+
+    """
 
     avg_anchor = torch.mean(anchor, dim=0)
     me_max_loss = - torch.sum(torch.log(avg_anchor**(-avg_anchor))) + math.log(float(len(avg_anchor)))
     return me_max_loss
 
 def entropy_regularization(anchor: torch.Tensor):
+
+    """Function that calculate the entropy value for the regularization term
+
+    Parameters:
+        anchor (torch.Tensor): The anchor output tensor of shape (batch_size, num_classes)
+    Returns:
+        the value of the entropy regularization term
+    """
+
     return torch.mean(torch.sum(torch.log(anchor**(-anchor)), dim=1))
 
 
 
 def training_loop():
+
+    """The training loop for the pretraining of the ViTMSN model. Following the original code, since it is a SSL model,
+    it is only applied the training part, without the validation that it can be tricky to implement in this case.
+
+    The dataloader is created with the double_img parameter set to True, so it will return the anchor and target images,
+    same image with different augmentations, to be used in the model.
+
+    The loss is updated with the regularizations terms and after the backpropagation is applied also the exponential moving
+    average for updating the target network. To each epoch, the model is saved and the loss is saved in the models_details.txt
+    file that contains all the information for each epoch. It is also updated the tensorboard logs with the loss values.
+    """
 
     datasets = cholec80_images.get_pytorch_dataloaders(
         data_root=Config.data_root,

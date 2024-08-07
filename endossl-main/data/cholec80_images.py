@@ -4,7 +4,6 @@ import os
 
 import torch
 import torchvision
-from tensorboard.compat.tensorflow_stub.dtypes import double
 from torchvision import transforms
 from torch.utils.data import Dataset, DataLoader
 
@@ -20,9 +19,11 @@ _LABEL_NUM_MAPPING = {
     'CalotTriangleDissection': 6
 }
 
+#For the MSN training loop uncomment the following line and comment the ones bellow
+# for _CHOLEC80_SPLIT definition
 _CHOLEC80_SPLIT = {'train': range(1, 21)}
 
-# For the classifier uncomment this part and comment the line above
+# For the classifier training uncomment this part and comment the line above
 # _CHOLEC80_SPLIT = {'train': range(1, 41),
 #                    'validation': range(41, 49),
 #                    'test': range(49, 81)}
@@ -37,7 +38,8 @@ _RAND_AUGMENT = transforms.Compose([
     transforms.ColorJitter(brightness=0.2, contrast=0.2, saturation=0.2, hue=0.2)  # Color jitter
 ])
 
-_RAND_AUGMENT_CLASSIFIER = transforms.RandAugment(num_ops=3, magnitude=7)
+# For the classifier uncomment this part and comment the lines above, for a different initialization of the RandAugment
+# _RAND_AUGMENT = transforms.RandAugment(num_ops=3, magnitude=7)
 
 
 def randaug(image: torch.Tensor)->torch.Tensor:
@@ -104,6 +106,9 @@ class CustomCholec80Dataset(Dataset):
             return self.parse_example(img_path, label)
 
     def prebuild(self, video_ids):
+        """Used for the initialization of the dataset. It will load all the paths of the images and the labels.
+        The uploading of the full image will be done in the __getitem__ call, when generating the batch.
+        """
         frames_dir = os.path.join(self.data_root, 'frames')
         annos_dir = os.path.join(self.data_root, 'phase_annotations')
 
@@ -115,6 +120,8 @@ class CustomCholec80Dataset(Dataset):
             with open(os.path.join(annos_dir, video_id + '-phase.txt'), 'r') as f:
                 labels = f.readlines()[1:]
 
+            # The videos frames are sampled with a frequency of 1 over 25 frames, but the labels annotations have not
+            # been subsampled. We need to subsample the labels to match the frames.
             labels = labels[::_SUBSAMPLE_RATE]
             ordered_labels = []
             # for loop necessary for ordering the labels to the corresponding frame
@@ -189,6 +196,9 @@ def get_pytorch_dataloaders(data_root, batch_size, double_img=False)->dict:
 
 
 if __name__ == '__main__':
+
+    """Example of usage of the dataloader, for check that is working correctly."""
+
     par_dir = os.path.realpath(__file__ + '/../../')
     data_root = os.path.join(par_dir, 'cholec80')
     dataloaders = get_pytorch_dataloaders(data_root, 8)

@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit and push" />
+    <list default="true" id="2cd5a960-b07a-4d49-8d25-5d676afaff47" name="Changes" comment="Commit and push">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Report/Report.log" beforeDir="false" afterPath="$PROJECT_DIR$/Report/Report.log" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Report/Report.pdf" beforeDir="false" afterPath="$PROJECT_DIR$/Report/Report.pdf" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -221,6 +225,7 @@
       <workItem from="1722980919860" duration="3797000" />
       <workItem from="1722992142027" duration="47000" />
       <workItem from="1722992306993" duration="2308000" />
+      <workItem from="1723064746048" duration="11000" />
     </task>
     <task id="LOCAL-00001" summary="Commit 25/07/2024: creazione di modello resnet semplificata">
       <option name="closed" value="true" />
@@ -294,7 +299,15 @@
       <option name="project" value="LOCAL" />
       <updated>1722994929874</updated>
     </task>
-    <option name="localTasksCounter" value="10" />
+    <task id="LOCAL-00010" summary="Commit and push">
+      <option name="closed" value="true" />
+      <created>1723053226224</created>
+      <option name="number" value="00010" />
+      <option name="presentableId" value="LOCAL-00010" />
+      <option name="project" value="LOCAL" />
+      <updated>1723053226224</updated>
+    </task>
+    <option name="localTasksCounter" value="11" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
